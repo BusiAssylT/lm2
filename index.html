@@ -3,782 +3,1035 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ручной хаос в блоге — чек-лист</title>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Диагностика блога: что держит вас в ручном хаосе</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #0a1628;
-    --navy-mid: #0f2040;
-    --navy-light: #162b52;
-    --gold: #C9A060;
-    --gold-light: #e0b87a;
-    --gold-dim: rgba(201,160,96,0.15);
-    --white: #f4f0ea;
-    --muted: rgba(244,240,234,0.55);
-    --mono: 'JetBrains Mono', monospace;
-    --sans: 'Manrope', sans-serif;
+    --ink: #111827;
+    --panel: #ffffff;
+    --paper: #f6f1e8;
+    --paper-strong: #ede3d3;
+    --sage: #58705f;
+    --sage-dark: #32483a;
+    --clay: #b95d3b;
+    --sun: #dba84d;
+    --blue: #315f86;
+    --muted: #6b7280;
+    --line: rgba(17, 24, 39, 0.12);
+    --soft-line: rgba(17, 24, 39, 0.08);
+    --shadow: 0 24px 70px rgba(32, 38, 46, 0.16);
+    --mono: "JetBrains Mono", monospace;
+    --sans: "Manrope", sans-serif;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * {
+    box-sizing: border-box;
+  }
 
   body {
-    background: var(--navy);
-    color: var(--white);
-    font-family: var(--sans);
-    line-height: 1.65;
+    margin: 0;
     min-height: 100vh;
+    color: var(--ink);
+    background:
+      linear-gradient(135deg, rgba(88, 112, 95, 0.12), transparent 30%),
+      linear-gradient(315deg, rgba(185, 93, 59, 0.13), transparent 34%),
+      var(--paper);
+    font-family: var(--sans);
+    line-height: 1.55;
   }
 
-  /* ─── NOISE TEXTURE ─── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.6;
+  button,
+  input,
+  textarea {
+    font: inherit;
   }
 
-  .wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 720px;
+  .shell {
+    width: min(1120px, calc(100% - 32px));
     margin: 0 auto;
-    padding: 60px 24px 80px;
+    padding: 28px 0 52px;
   }
 
-  /* ─── HERO ─── */
-  .hero {
-    text-align: center;
-    padding-bottom: 56px;
-    border-bottom: 1px solid rgba(201,160,96,0.2);
-    margin-bottom: 48px;
-  }
-
-  .label {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    display: block;
-  }
-
-  .hero h1 {
-    font-size: clamp(28px, 5vw, 42px);
-    font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 20px;
-    letter-spacing: -0.02em;
-  }
-
-  .hero h1 span {
-    color: var(--gold);
-  }
-
-  .hero p {
-    font-size: 16px;
-    color: var(--muted);
-    max-width: 520px;
-    margin: 0 auto 32px;
-  }
-
-  .promise-box {
-    background: var(--gold-dim);
-    border: 1px solid rgba(201,160,96,0.3);
-    border-radius: 12px;
-    padding: 20px 24px;
-    font-size: 15px;
-    color: var(--white);
-    text-align: left;
-  }
-
-  .promise-box strong {
-    color: var(--gold);
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    display: block;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-  }
-
-  /* ─── HOW TO USE ─── */
-  .how-to {
-    background: var(--navy-mid);
-    border-radius: 12px;
-    padding: 24px 28px;
-    margin-bottom: 48px;
-    border-left: 3px solid var(--gold);
-  }
-
-  .how-to h3 {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.15em;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-
-  .how-to ol {
-    padding-left: 18px;
-    color: var(--muted);
-    font-size: 14px;
-  }
-
-  .how-to ol li { margin-bottom: 6px; }
-
-  .levels {
-    display: flex;
-    gap: 10px;
-    margin-top: 14px;
-    flex-wrap: wrap;
-  }
-
-  .level {
-    font-family: var(--mono);
-    font-size: 12px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    border: 1px solid rgba(201,160,96,0.3);
-    color: var(--muted);
-  }
-
-  /* ─── COUNTER ─── */
-  .counter-bar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--navy);
-    border-bottom: 1px solid rgba(201,160,96,0.15);
-    padding: 12px 0;
-    margin-bottom: 40px;
-  }
-
-  .counter-inner {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 0 24px;
+  .topbar {
     display: flex;
     align-items: center;
-    gap: 16px;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 26px;
   }
 
-  .counter-label {
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .mark {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border-radius: 8px;
+    color: #fff;
+    background: var(--sage-dark);
     font-family: var(--mono);
-    font-size: 12px;
-    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .brand-text {
+    min-width: 0;
+  }
+
+  .brand-title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 800;
     white-space: nowrap;
   }
 
-  .counter-track {
-    flex: 1;
-    height: 4px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 2px;
-    overflow: hidden;
+  .brand-sub {
+    margin: 1px 0 0;
+    color: var(--muted);
+    font-size: 12px;
   }
 
-  .counter-fill {
-    height: 100%;
-    background: var(--gold);
-    border-radius: 2px;
-    transition: width 0.3s ease;
-    width: 0%;
-  }
-
-  .counter-num {
-    font-family: var(--mono);
-    font-size: 18px;
-    font-weight: 500;
-    color: var(--gold);
-    min-width: 32px;
-    text-align: right;
-  }
-
-  /* ─── BLOCKS ─── */
-  .block {
-    margin-bottom: 44px;
-    animation: fadeUp 0.5s ease both;
-  }
-
-  .block:nth-child(1) { animation-delay: 0.1s; }
-  .block:nth-child(2) { animation-delay: 0.2s; }
-  .block:nth-child(3) { animation-delay: 0.3s; }
-  .block:nth-child(4) { animation-delay: 0.4s; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .block-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    margin-bottom: 20px;
-  }
-
-  .block-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: var(--gold-dim);
-    border: 1px solid rgba(201,160,96,0.25);
+  .timer {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  .block-title {
-    font-weight: 800;
-    font-size: 17px;
-    letter-spacing: -0.01em;
-    margin-bottom: 4px;
-  }
-
-  .block-sub {
-    font-size: 13px;
-    color: var(--muted);
+    gap: 8px;
+    color: var(--sage-dark);
     font-family: var(--mono);
+    font-size: 12px;
+    white-space: nowrap;
   }
 
-  /* ─── ITEMS ─── */
-  .item {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-    padding: 14px 16px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.06);
-    margin-bottom: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: rgba(255,255,255,0.02);
-    user-select: none;
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
+    gap: 28px;
+    align-items: start;
   }
 
-  .item:hover {
-    border-color: rgba(201,160,96,0.3);
-    background: var(--gold-dim);
+  .intro {
+    position: sticky;
+    top: 24px;
+    padding: 34px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.62);
+    backdrop-filter: blur(14px);
   }
 
-  .item.checked {
-    background: rgba(201,160,96,0.08);
-    border-color: rgba(201,160,96,0.35);
-  }
-
-  .item.checked .item-text {
-    color: var(--muted);
-    text-decoration: line-through;
-    text-decoration-color: rgba(201,160,96,0.4);
-  }
-
-  .checkbox {
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(201,160,96,0.35);
-    border-radius: 5px;
-    flex-shrink: 0;
-    margin-top: 1px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-  }
-
-  .item.checked .checkbox {
-    background: var(--gold);
-    border-color: var(--gold);
-  }
-
-  .checkbox svg {
-    opacity: 0;
-    transition: opacity 0.15s ease;
-  }
-
-  .item.checked .checkbox svg { opacity: 1; }
-
-  .item-text {
-    font-size: 15px;
-    line-height: 1.55;
-    transition: color 0.2s ease;
-  }
-
-  /* ─── SEED ─── */
-  .seed {
-    background: linear-gradient(135deg, rgba(201,160,96,0.1) 0%, rgba(22,43,82,0.6) 100%);
-    border: 1px solid rgba(201,160,96,0.25);
-    border-radius: 14px;
-    padding: 24px 28px;
-    margin: 48px 0;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .seed::before {
-    content: '✦';
-    position: absolute;
-    top: -10px;
-    right: 20px;
-    font-size: 80px;
-    color: rgba(201,160,96,0.05);
-    pointer-events: none;
-  }
-
-  .seed-label {
+  .eyebrow {
+    margin: 0 0 18px;
+    color: var(--clay);
     font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .seed p {
-    font-size: 15px;
-    color: var(--white);
-    line-height: 1.65;
-  }
-
-  .seed p em {
-    color: var(--gold);
-    font-style: normal;
+    font-size: 12px;
     font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
-  /* ─── DIAGNOSIS ─── */
-  .diagnosis {
-    margin: 48px 0;
+  h1 {
+    margin: 0;
+    font-size: clamp(34px, 5vw, 58px);
+    line-height: 1.02;
+    letter-spacing: 0;
   }
 
-  .diagnosis h2 {
-    font-size: 22px;
-    font-weight: 800;
-    margin-bottom: 8px;
-    letter-spacing: -0.02em;
+  .lead {
+    margin: 22px 0 0;
+    max-width: 520px;
+    color: #394150;
+    font-size: 17px;
   }
 
-  .diagnosis .hint {
-    font-size: 13px;
+  .signal-board {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .signal {
+    min-height: 104px;
+    padding: 15px;
+    border: 1px solid var(--soft-line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.62);
+  }
+
+  .signal b {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--sage-dark);
+    font-size: 14px;
+  }
+
+  .signal span {
+    display: block;
     color: var(--muted);
-    margin-bottom: 24px;
-    font-family: var(--mono);
+    font-size: 13px;
   }
 
-  .diag-cards {
+  .quiz {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--panel);
+    box-shadow: var(--shadow);
+  }
+
+  .progress {
+    padding: 22px 24px 18px;
+    border-bottom: 1px solid var(--soft-line);
+    background: #fbfaf7;
+  }
+
+  .progress-top {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .diag-card {
-    border-radius: 12px;
-    padding: 20px 22px;
-    border: 1px solid rgba(255,255,255,0.07);
-    opacity: 0.35;
-    transition: all 0.35s ease;
-    background: var(--navy-mid);
-  }
-
-  .diag-card.active {
-    opacity: 1;
-    border-color: var(--gold);
-    background: linear-gradient(135deg, rgba(201,160,96,0.12) 0%, var(--navy-mid) 100%);
-    box-shadow: 0 0 30px rgba(201,160,96,0.1);
-  }
-
-  .diag-range {
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+    color: var(--muted);
     font-family: var(--mono);
-    font-size: 11px;
-    color: var(--gold);
+    font-size: 12px;
+  }
+
+  .track {
+    height: 6px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(49, 95, 134, 0.14);
+  }
+
+  .fill {
+    width: 0%;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--sage), var(--blue), var(--clay));
+    transition: width 0.25s ease;
+  }
+
+  .screen {
+    display: none;
+    padding: 30px 24px 26px;
+  }
+
+  .screen.active {
+    display: block;
+  }
+
+  .question-kicker {
+    margin: 0 0 10px;
+    color: var(--clay);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    margin-bottom: 8px;
   }
 
-  .diag-title {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 6px;
+  .question-title {
+    margin: 0 0 10px;
+    font-size: clamp(24px, 4vw, 34px);
+    line-height: 1.12;
+    letter-spacing: 0;
   }
 
-  .diag-desc {
-    font-size: 14px;
+  .question-help {
+    margin: 0 0 22px;
     color: var(--muted);
-    line-height: 1.6;
-  }
-
-  /* ─── CTA ─── */
-  .cta-section {
-    margin-top: 56px;
-    text-align: center;
-    padding: 48px 32px;
-    background: var(--navy-mid);
-    border-radius: 20px;
-    border: 1px solid rgba(201,160,96,0.2);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .cta-section::after {
-    content: '';
-    position: absolute;
-    bottom: -60px;
-    right: -60px;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(201,160,96,0.12) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .cta-eyebrow {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-
-  .cta-section h2 {
-    font-size: clamp(22px, 4vw, 32px);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin-bottom: 14px;
-    line-height: 1.2;
-  }
-
-  .cta-section p {
     font-size: 15px;
-    color: var(--muted);
-    max-width: 460px;
-    margin: 0 auto 32px;
-    line-height: 1.65;
   }
 
-  .cta-list {
-    list-style: none;
+  .options {
+    display: grid;
+    gap: 10px;
+  }
+
+  .option {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    width: 100%;
+    min-height: 62px;
+    padding: 15px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--ink);
+    background: #fff;
     text-align: left;
-    max-width: 380px;
-    margin: 0 auto 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    cursor: pointer;
+    transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
   }
 
-  .cta-list li {
-    font-size: 14px;
+  .option:hover {
+    border-color: rgba(88, 112, 95, 0.52);
+    background: #fbfaf7;
+    transform: translateY(-1px);
+  }
+
+  .option.selected {
+    border-color: var(--sage);
+    background: rgba(88, 112, 95, 0.1);
+  }
+
+  .dot {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    border: 2px solid rgba(17, 24, 39, 0.2);
+    border-radius: 50%;
+    background: #fff;
+  }
+
+  .option.selected .dot {
+    border: 6px solid var(--sage-dark);
+  }
+
+  .option strong {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 15px;
+  }
+
+  .option span {
+    display: block;
     color: var(--muted);
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
+    font-size: 13px;
   }
 
-  .cta-list li::before {
-    content: '→';
-    color: var(--gold);
-    font-family: var(--mono);
-    flex-shrink: 0;
-    margin-top: 1px;
+  .capture {
+    display: grid;
+    gap: 18px;
+  }
+
+  .field label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--sage-dark);
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .field input[type="url"],
+  .field textarea {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    outline: none;
+    color: var(--ink);
+    background: #fff;
+  }
+
+  .field input[type="url"] {
+    height: 48px;
+    padding: 0 14px;
+  }
+
+  .field textarea {
+    min-height: 112px;
+    padding: 14px;
+    resize: vertical;
+  }
+
+  .field input:focus,
+  .field textarea:focus {
+    border-color: var(--sage);
+    box-shadow: 0 0 0 4px rgba(88, 112, 95, 0.13);
+  }
+
+  .upload {
+    display: grid;
+    place-items: center;
+    min-height: 138px;
+    padding: 18px;
+    border: 1px dashed rgba(49, 95, 134, 0.42);
+    border-radius: 8px;
+    color: var(--muted);
+    background: rgba(49, 95, 134, 0.05);
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .upload strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--blue);
+  }
+
+  .upload input {
+    display: none;
+  }
+
+  .file-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 28px;
+  }
+
+  .file-pill {
+    max-width: 100%;
+    overflow: hidden;
+    padding: 6px 10px;
+    border-radius: 999px;
+    color: var(--sage-dark);
+    background: rgba(88, 112, 95, 0.12);
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 20px 24px 24px;
+    border-top: 1px solid var(--soft-line);
+    background: #fbfaf7;
   }
 
   .btn {
-    display: inline-block;
-    background: var(--gold);
-    color: var(--navy);
-    font-family: var(--sans);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 22px;
+    border: 0;
+    border-radius: 8px;
+    color: #fff;
+    background: var(--sage-dark);
     font-weight: 800;
-    font-size: 15px;
-    padding: 16px 36px;
-    border-radius: 10px;
     text-decoration: none;
-    letter-spacing: 0.01em;
-    transition: all 0.2s ease;
-    border: none;
     cursor: pointer;
+    transition: transform 0.18s ease, background 0.18s ease;
   }
 
   .btn:hover {
-    background: var(--gold-light);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(201,160,96,0.3);
+    background: #25372c;
+    transform: translateY(-1px);
   }
 
-  .cta-sub {
-    margin-top: 14px;
-    font-size: 12px;
-    color: rgba(244,240,234,0.35);
+  .btn.secondary {
+    color: var(--sage-dark);
+    background: transparent;
+  }
+
+  .btn.secondary:hover {
+    background: rgba(88, 112, 95, 0.1);
+  }
+
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+    transform: none;
+  }
+
+  .result {
+    display: none;
+    padding: 30px 24px 26px;
+  }
+
+  .result.active {
+    display: block;
+  }
+
+  .diagnosis-head {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+
+  .type-badge {
+    width: fit-content;
+    padding: 8px 12px;
+    border-radius: 999px;
+    color: var(--sage-dark);
+    background: rgba(88, 112, 95, 0.12);
     font-family: var(--mono);
-  }
-
-  /* ─── FOOTER ─── */
-  .footer {
-    margin-top: 60px;
-    text-align: center;
     font-size: 12px;
-    color: rgba(244,240,234,0.25);
-    font-family: var(--mono);
-    letter-spacing: 0.05em;
+    font-weight: 700;
   }
 
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 480px) {
-    .wrap { padding: 40px 16px 60px; }
-    .counter-inner { padding: 0 16px; }
-    .levels { gap: 6px; }
-    .cta-section { padding: 36px 20px; }
+  .result h2 {
+    margin: 0;
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.08;
+    letter-spacing: 0;
+  }
+
+  .result-lead {
+    margin: 0;
+    color: #394150;
+    font-size: 17px;
+  }
+
+  .diagnosis-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 24px 0;
+  }
+
+  .mini {
+    padding: 16px;
+    border: 1px solid var(--soft-line);
+    border-radius: 8px;
+    background: #fbfaf7;
+  }
+
+  .mini b {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--clay);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .mini p {
+    margin: 0;
+    color: #4b5563;
+    font-size: 14px;
+  }
+
+  .next-step {
+    margin-top: 24px;
+    padding: 22px;
+    border: 1px solid rgba(185, 93, 59, 0.28);
+    border-radius: 8px;
+    background: rgba(185, 93, 59, 0.08);
+  }
+
+  .next-step h3 {
+    margin: 0 0 8px;
+    font-size: 20px;
+  }
+
+  .next-step p {
+    margin: 0 0 18px;
+    color: #4b5563;
+  }
+
+  .next-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .ghost-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 18px;
+    border-radius: 8px;
+    color: var(--sage-dark);
+    background: rgba(255, 255, 255, 0.62);
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .note {
+    margin: 18px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  @media (max-width: 920px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+
+    .intro {
+      position: static;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .shell {
+      width: min(100% - 24px, 1120px);
+      padding-top: 18px;
+    }
+
+    .topbar {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .intro,
+    .screen,
+    .result {
+      padding: 22px 18px;
+    }
+
+    .signal-board,
+    .diagnosis-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .actions {
+      align-items: stretch;
+      flex-direction: column-reverse;
+      padding: 16px 18px 18px;
+    }
+
+    .btn,
+    .ghost-link {
+      width: 100%;
+    }
   }
 </style>
 </head>
 <body>
-
-<div class="wrap">
-
-  <!-- HERO -->
-  <div class="hero">
-    <span class="label">Бесплатный чек-лист от Асыл Турубаевой</span>
-    <h1>Ручные действия, из-за которых<br><span>твой блог крадёт время</span><br>из твоей жизни</h1>
-    <p>Отметь то, что есть у тебя — и увидишь, где именно утекают твои часы и энергия.</p>
-    <div class="promise-box">
-      <strong>Обещание</strong>
-      Дочитав до конца, ты поймёшь: проблема не в дисциплине. У тебя есть конкретные точки, в которых система работает против тебя. Их можно найти за 5 минут.
-    </div>
-  </div>
-
-  <!-- HOW TO USE -->
-  <div class="how-to">
-    <h3>Как пользоваться — 30 секунд</h3>
-    <ol>
-      <li>Ставь ✓ напротив того, что есть у тебя прямо сейчас</li>
-      <li>Посчитай количество отметок в каждом блоке</li>
-      <li>Выбери блок с наибольшим числом — это твоя первая точка разгрузки</li>
-      <li>Посмотри диагноз внизу — он обновится автоматически</li>
-    </ol>
-    <div class="levels">
-      <span class="level">0–5 ✦ лёгкий апгрейд</span>
-      <span class="level">6–12 ✦ есть утечки</span>
-      <span class="level">13+ ✦ тащишь вручную</span>
-    </div>
-  </div>
-
-</div>
-
-<!-- STICKY COUNTER -->
-<div class="counter-bar">
-  <div class="counter-inner">
-    <span class="counter-label">Отмечено</span>
-    <div class="counter-track">
-      <div class="counter-fill" id="fill"></div>
-    </div>
-    <span class="counter-num" id="count">0</span>
-  </div>
-</div>
-
-<div class="wrap" style="padding-top: 0;">
-
-  <!-- BLOCKS -->
-  <div class="block">
-    <div class="block-header">
-      <div class="block-icon">✍️</div>
-      <div>
-        <div class="block-title">А — Контент каждый раз с нуля</div>
-        <div class="block-sub">Где теряется больше всего времени и мыслей</div>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark">AT</div>
+        <div class="brand-text">
+          <p class="brand-title">Асыл Турубаева</p>
+          <p class="brand-sub">блог, ИИ и порядок вместо ручного хаоса</p>
+        </div>
       </div>
-    </div>
+      <div class="timer">5 минут · 7 вопросов · персональный вывод</div>
+    </header>
 
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Придумываю тему поста в последний момент, "из воздуха"</span>
-    </div>
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Пишу пост, каждый раз заново решая: как начать / как закончить / как продать</span>
-    </div>
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Переписываю текст по 5–7 раз, потому что нет структуры</span>
-    </div>
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Делаю контент-план как "идеальный документ", но он не превращается в публикации</span>
-    </div>
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Снимаю Reels без сценария → много дублей → откладываю</span>
-    </div>
-  </div>
+    <div class="layout">
+      <section class="intro" aria-label="Описание диагностики">
+        <p class="eyebrow">Бесплатная диагностика</p>
+        <h1>Что держит ваш блог в ручном хаосе?</h1>
+        <p class="lead">Ответьте на несколько вопросов и получите диагноз: где именно блог теряет энергию, почему посты не цепляют и какую часть работы стоит упорядочить первой.</p>
 
-  <div class="block">
-    <div class="block-header">
-      <div class="block-icon">🧠</div>
-      <div>
-        <div class="block-title">Б — Память и идеи в голове</div>
-        <div class="block-sub">Что не записано — уходит безвозвратно</div>
-      </div>
-    </div>
+        <div class="signal-board">
+          <div class="signal">
+            <b>Не PDF</b>
+            <span>Живой вывод по вашим ответам, без универсальных советов на всех.</span>
+          </div>
+          <div class="signal">
+            <b>Не про дисциплину</b>
+            <span>Ищем не “почему вы ленитесь”, а где не хватает опоры и процесса.</span>
+          </div>
+          <div class="signal">
+            <b>Можно добавить Instagram</b>
+            <span>Ссылка или скрины помогут точнее увидеть упаковку и точки входа.</span>
+          </div>
+          <div class="signal">
+            <b>Следующий шаг</b>
+            <span>После диагноза будет понятно, что именно настроить в ChatGPT для вашего блога.</span>
+          </div>
+        </div>
+      </section>
 
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Идеи живут в заметках / директе / голове и постоянно теряются</span>
-    </div>
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Не помню, что уже говорила аудитории — повторяюсь или "забываю важное"</span>
-    </div>
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Нет списка "опорных тем/углов" → каждый раз новое решение = усталость</span>
-    </div>
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Нет библиотеки кейсов → сложно быстро подкреплять доверие аудитории</span>
-    </div>
-  </div>
+      <section class="quiz" aria-label="Квиз диагностики блога">
+        <div class="progress">
+          <div class="progress-top">
+            <span id="stepLabel">Вопрос 1 из 8</span>
+            <span id="answeredLabel">0% готово</span>
+          </div>
+          <div class="track" aria-hidden="true">
+            <div class="fill" id="fill"></div>
+          </div>
+        </div>
 
-  <div class="block">
-    <div class="block-header">
-      <div class="block-icon">💬</div>
-      <div>
-        <div class="block-title">В — Коммуникация и продажи вручную</div>
-        <div class="block-sub">Где тёплые клиенты теряются по дороге</div>
-      </div>
-    </div>
+        <div id="screens"></div>
 
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Отвечаю в директ каждому по-разному, без заготовок и логики следующего шага</span>
-    </div>
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Долго "раскачиваю" человека сообщениями вместо короткой структуры</span>
-    </div>
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Теряю тёплых: не возвращаюсь, забываю, не фиксирую статус</span>
-    </div>
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Путаюсь в возражениях: каждый раз заново придумываю ответы</span>
-    </div>
-  </div>
+        <div class="result" id="result">
+          <div class="diagnosis-head">
+            <div class="type-badge" id="resultType">Тип хаоса</div>
+            <h2 id="resultTitle"></h2>
+            <p class="result-lead" id="resultLead"></p>
+          </div>
 
-  <div class="block">
-    <div class="block-header">
-      <div class="block-icon">📤</div>
-      <div>
-        <div class="block-title">Г — Публикация без опор</div>
-        <div class="block-sub">Где тратится время на "оргвопросы" вокруг контента</div>
-      </div>
-    </div>
+          <div class="diagnosis-grid">
+            <div class="mini">
+              <b>Главная ошибка</b>
+              <p id="resultMistake"></p>
+            </div>
+            <div class="mini">
+              <b>Что чинить первым</b>
+              <p id="resultFix"></p>
+            </div>
+            <div class="mini">
+              <b>Быстрый шаг</b>
+              <p id="resultStep"></p>
+            </div>
+          </div>
 
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Долго выбираю обложку / визуал, потому что нет 2–3 шаблонов</span>
-    </div>
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Трачу время на технику (ссылки, шапка, закрепы) без чек-листа</span>
-    </div>
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Нет минимального ритма → каждый день решаю заново: выкладывать или нет</span>
-    </div>
-    <div class="item" onclick="toggle(this)">
-      <div class="checkbox"><svg width="12" height="9" fill="none" viewBox="0 0 12 9"><path d="M1 4l3.5 3.5L11 1" stroke="#0a1628" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="item-text">Нет процесса "подготовка → публикация → переработка в сторис"</span>
-    </div>
-  </div>
+          <div class="next-step">
+            <h3>Хотите, чтобы ChatGPT помогал вести блог, а не просто писал отдельные посты?</h3>
+            <p>Я подготовила мини-урок, где показываю, как за один вечер настроить ChatGPT под свой блог: понятно сформулировать, о чём вы и для кого, собрать постоянные темы, сохранить идеи, настроить помощника для текстов и визуала, а потом собрать план на месяц и неделю.</p>
+            <div class="next-actions">
+              <a class="btn" href="https://wa.me/77054897959?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%83%20%D0%B4%D0%BB%D1%8F%20%D0%B1%D0%BB%D0%BE%D0%B3%D0%B0" target="_blank" rel="noreferrer">Хочу систему для блога</a>
+              <button class="ghost-link" type="button" id="restartBtn">Пройти заново</button>
+            </div>
+            <p class="note" id="instagramNote"></p>
+          </div>
+        </div>
 
-  <!-- SEED — мягкое упоминание челленджа -->
-  <div class="seed">
-    <div class="seed-label">Кстати</div>
-    <p>Именно эти четыре блока мы разбираем в челлендже <em>«Блог с ИИ»</em> — не теоретически, а сразу на твоём блоге. День первый: смотришь где у тебя течёт. День второй: начинаешь чинить. К концу первой недели у тебя есть позиционирование, портрет аудитории и первые рубрики — собранные за реальные рабочие сессии, а не "когда-нибудь".</p>
-  </div>
-
-  <!-- DIAGNOSIS -->
-  <div class="diagnosis">
-    <h2>Твой диагноз</h2>
-    <p class="hint">Обновляется автоматически по мере заполнения</p>
-    <div class="diag-cards">
-      <div class="diag-card" id="diag-0">
-        <div class="diag-range">0 – 5 отметок</div>
-        <div class="diag-title">Система уже есть — нужен лёгкий апгрейд</div>
-        <div class="diag-desc">У тебя достаточно опор. Скорее всего остались точечные дыры — одно-два узких места, которые стоит закрыть инструментом или шаблоном.</div>
-      </div>
-      <div class="diag-card" id="diag-1">
-        <div class="diag-range">6 – 12 отметок</div>
-        <div class="diag-title">Система держится на тебе — есть утечки</div>
-        <div class="diag-desc">Блог работает, но требует слишком много твоего ресурса. Ты не ленивая — у тебя нет системы для нескольких ключевых процессов. Это решаемо.</div>
-      </div>
-      <div class="diag-card" id="diag-2">
-        <div class="diag-range">13 – 17 отметок</div>
-        <div class="diag-title">Ты тащишь блог вручную — нужен пересбор процесса</div>
-        <div class="diag-desc">Твой блог работает только пока работаешь ты. Это не вопрос мотивации — это архитектурная проблема. Хорошая новость: её можно решить системно, а не героически.</div>
-      </div>
+        <div class="actions" id="actions">
+          <button class="btn secondary" type="button" id="backBtn">Назад</button>
+          <button class="btn" type="button" id="nextBtn" disabled>Дальше</button>
+        </div>
+      </section>
     </div>
-  </div>
-
-  <!-- CTA -->
-  <div class="cta-section">
-    <div class="cta-eyebrow">Следующий шаг</div>
-    <h2>Теперь ты знаешь<br>где у тебя течёт</h2>
-    <p>Челлендж «Блог с ИИ» — это 5 рабочих дней, за которые ты закрываешь именно те дыры, которые только что нашла.</p>
-    <ul class="cta-list">
-      <li>День 1: позиционирование и аудитория — кто ты и для кого</li>
-      <li>День 2: анализ рынка и язык твоего клиента</li>
-      <li>День 3: оффер, продуктовая линейка и воронка</li>
-      <li>День 4: контент-ритм, рубрики, упаковка профиля</li>
-      <li>День 5: первые публикации и план на неделю</li>
-    </ul>
-    <a class="btn" href="https://instagram.com/assylturubayeva" target="_blank">Хочу в челлендж →</a>
-    <div class="cta-sub">Пишешь в директ — обсудим ближайший старт</div>
-  </div>
-
-  <div class="footer">
-    © Асыл Турубаева · @assylturubayeva · Блог с ИИ без перегруза
-  </div>
-
-</div>
+  </main>
 
 <script>
-  const TOTAL = 17;
+  const questions = [
+    {
+      kicker: "Точка напряжения",
+      title: "Что сейчас сложнее всего в блоге?",
+      help: "Выберите вариант, который чаще всего останавливает публикации.",
+      options: [
+        ["Идеи есть, но они расползаются по заметкам", "Кажется, что мыслей много, а собрать из них систему сложно.", "memory"],
+        ["Не понимаю, как подать мысль так, чтобы её дочитали", "Есть опыт и знания, но начало поста получается тяжёлым.", "packaging"],
+        ["Сложно держать регулярность", "Каждый пост начинается как отдельный подвиг.", "system"],
+        ["Контент есть, но он не приводит к заявкам", "Люди читают, но следующий шаг не очевиден.", "sales"],
+        ["Картинки и короткие видео тормозят весь процесс", "Много времени уходит на обложки, слайды и сценарии.", "visual"]
+      ]
+    },
+    {
+      kicker: "Процесс",
+      title: "Как обычно рождается пост?",
+      help: "Не идеальный вариант, а как чаще всего происходит на практике.",
+      options: [
+        ["Сажусь и придумываю всё с нуля", "Тему, структуру, начало, вывод и продажу решаю заново.", "system"],
+        ["Беру мысль из заметок, но долго ищу угол", "Идея есть, а подача каждый раз требует отдельной сборки.", "packaging"],
+        ["Пишу экспертно, но без эмоционального крючка", "Текст полезный, но не всегда вызывает желание продолжать.", "packaging"],
+        ["Отталкиваюсь от продукта, но не знаю, как продать мягко", "Переход к предложению купить выглядит резким или случайным.", "sales"]
+      ]
+    },
+    {
+      kicker: "Память",
+      title: "Где живут идеи, кейсы и наблюдения?",
+      help: "Этот вопрос показывает, есть ли у блога внешняя память.",
+      options: [
+        ["В голове, заметках, директе и случайных скринах", "Всё вроде есть, но быстро найти невозможно.", "memory"],
+        ["В одном документе, но без порядка", "Записано много, но быстро использовать это в постах тяжело.", "memory"],
+        ["В плане постов, который быстро устаревает", "План есть, но он не помогает продолжать мысли из недели в неделю.", "system"],
+        ["Есть база тем и повторяющихся форматов", "Опоры уже есть, их нужно только усилить.", "balanced"]
+      ]
+    },
+    {
+      kicker: "Впечатление",
+      title: "На что больше похож ваш блог со стороны?",
+      help: "Представьте, что человек впервые открыл профиль.",
+      options: [
+        ["На набор отдельных постов", "Полезно, но не видно общей траектории.", "system"],
+        ["На библиотеку полезных постов без входа для новичка", "Сильно по смыслу, но человеку сложно быстро понять, почему это про него.", "packaging"],
+        ["На витрину без понятного пути к покупке", "Посты есть, но человеку не всегда понятно, что делать дальше.", "sales"],
+        ["На живой блог, но визуально всё разное", "Есть энергия, но упаковка не собирает доверие быстро.", "visual"]
+      ]
+    },
+    {
+      kicker: "Цель",
+      title: "Что вы хотите получить от блога в ближайший месяц?",
+      help: "Так диагноз станет ближе к реальной бизнес-задаче.",
+      options: [
+        ["Больше заявок и продаж", "Нужны посты, которые мягко ведут к покупке.", "sales"],
+        ["Узнаваемость и ощущение экспертности", "Нужно усилить угол подачи и повторяемые смыслы.", "packaging"],
+        ["Стабильный ритм без выгорания", "Нужна система недели, а не вдохновение по настроению.", "system"],
+        ["Порядок в идеях и темах", "Нужно место, где мысли не теряются и превращаются в посты.", "memory"],
+        ["Более сильная визуальная подача", "Нужны сценарии, референсы и правила упаковки.", "visual"]
+      ]
+    },
+    {
+      kicker: "Сериальность",
+      title: "Есть ли в блоге постоянные темы, которые хочется ждать?",
+      help: "Повторяющиеся темы делают блог узнаваемым и снимают часть ручной нагрузки.",
+      options: [
+        ["Нет, посты живут сами по себе", "Аудитории сложно понять, зачем возвращаться.", "system"],
+        ["Есть постоянные темы, но они не связаны с продажами", "Посты выходят, но не всегда помогают человеку захотеть ваш продукт.", "sales"],
+        ["Есть идеи серий постов, но я их не довожу", "Не хватает недельного ритма и понятных шаблонов.", "system"],
+        ["Есть 2–3 стабильных формата", "Хорошая база. Можно усилить подачу и призывы к действию.", "balanced"]
+      ]
+    },
+    {
+      kicker: "Продажи",
+      title: "Что происходит после полезного поста?",
+      help: "Здесь видно, понимает ли человек, что делать после полезного поста.",
+      options: [
+        ["Ничего. Люди просто читают", "Не хватает ясного следующего шага.", "sales"],
+        ["Я иногда зову в директ, но без системы", "Призыв есть, но он не связан с остальными постами.", "sales"],
+        ["Посты полезные, но я боюсь звучать продающе", "Нужны мягкие призывы к действию и понятный переход к продукту.", "packaging"],
+        ["Есть понятный призыв к действию и повторяющаяся логика", "Продажная часть уже держится лучше среднего.", "balanced"]
+      ]
+    },
+    {
+      kicker: "Instagram",
+      title: "Хотите добавить Instagram для более точного разбора?",
+      help: "Это необязательно для результата. Можно вставить ссылку, загрузить скрины шапки/постов или коротко описать профиль.",
+      capture: true
+    }
+  ];
 
-  function toggle(el) {
-    el.classList.toggle('checked');
-    updateCounter();
-    updateDiagnosis();
+  const diagnoses = {
+    system: {
+      type: "Тип: блог без операционной системы",
+      title: "Ваш блог выглядит как набор постов, а не как система.",
+      lead: "Проблема не в идеях и не в дисциплине. Вы каждый раз заново решаете, что публиковать, зачем, в какой форме и к чему вести человека.",
+      mistake: "Блог держится на ручном управлении: нет повторяемого ритма, постоянных тем и понятного плана недели.",
+      fix: "Собрать простую систему: постоянные темы, недельный ритм, роли постов и понятный план.",
+      step: "Выберите 3 постоянные темы: полезная, доверительная и продающая. Дайте каждой один повторяемый формат."
+    },
+    packaging: {
+      type: "Тип: сильный эксперт без эмоционального входа",
+      title: "Вы пишете как эксперт, но не оставляете точек эмоционального входа.",
+      lead: "Смыслы есть, но человеку нужно быстрее понять: почему это про него, зачем читать дальше и что изменится после вашего подхода.",
+      mistake: "Польза появляется раньше контекста. Человек видит знание, но не всегда чувствует личное попадание.",
+      fix: "Усилить подачу мысли: начало поста, понятный угол, контрасты, примеры из жизни клиента и повторяющиеся форматы.",
+      step: "Перед каждым постом дописывайте одну строку: “человек узнает себя здесь, потому что...”."
+    },
+    memory: {
+      type: "Тип: идеи есть, внешней памяти нет",
+      title: "У вас не проблема с идеями. У вас проблема с хранением и извлечением мыслей.",
+      lead: "Материала для постов достаточно, но он живёт в разных местах. Поэтому мозг каждый раз тратит силы не на смысл, а на поиск и сборку.",
+      mistake: "Идеи, кейсы, фразы клиентов и наблюдения не собраны в одно рабочее место.",
+      fix: "Сделать банк идей: темы, боли потенциальных клиентов, кейсы, варианты подачи, призывы к действию и статус каждой идеи.",
+      step: "Соберите 20 сырых мыслей в один документ и разложите их по трём полкам: боль, доказательство, продажа."
+    },
+    sales: {
+      type: "Тип: посты без понятного пути к покупке",
+      title: "Люди могут читать вас, но не понимать, куда идти дальше.",
+      lead: "Вовлечение само по себе не продаёт. Нужна логика переходов: от узнавания проблемы к доверию, желанию решения и понятному действию.",
+      mistake: "Призыв к действию появляется случайно или слишком поздно, а продукт не связан с постоянными темами блога.",
+      fix: "Связать постоянные темы с предложением: какие посты знакомят, какие объясняют, какие снимают сомнения, какие зовут сделать следующий шаг.",
+      step: "Для каждой постоянной темы допишите один мягкий призыв к действию: сохранить, ответить, написать кодовое слово, перейти к уроку."
+    },
+    visual: {
+      type: "Тип: смысл есть, упаковка тормозит публикации",
+      title: "Ваши посты застревают на форме: картинки, короткие видео, обложки и сценарии съедают энергию.",
+      lead: "Когда нет правил визуальной сборки, каждый пост превращается в отдельный дизайн-проект. Это замедляет регулярность и размывает узнаваемость.",
+      mistake: "Нет 2–3 визуальных шаблонов и сценарных заготовок, которые можно повторять без долгих решений.",
+      fix: "Собрать простые правила для визуала: форматы обложек, сценарии коротких видео, примеры и запросы для помощника.",
+      step: "Выберите один стиль обложек, один формат короткого видео и один шаблон поста со слайдами на ближайшие 7 дней."
+    },
+    balanced: {
+      type: "Тип: база уже есть",
+      title: "У вас уже есть опоры. Следующий рост даст не больше постов, а более точная система.",
+      lead: "Похоже, блог не в хаосе, но отдельные процессы можно собрать плотнее: память идей, повторяющиеся темы, призывы к действию и недельный ритм.",
+      mistake: "Опоры есть, но они могут жить отдельно друг от друга, без единой рабочей архитектуры.",
+      fix: "Соединить существующие темы, форматы и продукты в одну понятную систему.",
+      step: "Проверьте текущие постоянные темы: у каждой должна быть роль, частота, пример призыва к действию и связь с продуктом."
+    }
+  };
+
+  const state = {
+    index: 0,
+    answers: {},
+    instagramUrl: "",
+    instagramNotes: "",
+    files: []
+  };
+
+  const screensEl = document.getElementById("screens");
+  const resultEl = document.getElementById("result");
+  const actionsEl = document.getElementById("actions");
+  const backBtn = document.getElementById("backBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const fillEl = document.getElementById("fill");
+  const stepLabel = document.getElementById("stepLabel");
+  const answeredLabel = document.getElementById("answeredLabel");
+
+  function renderScreens() {
+    screensEl.innerHTML = questions.map((question, index) => {
+      if (question.capture) {
+        return `
+          <div class="screen" data-screen="${index}">
+            <p class="question-kicker">${question.kicker}</p>
+            <h2 class="question-title">${question.title}</h2>
+            <p class="question-help">${question.help}</p>
+            <div class="capture">
+              <div class="field">
+                <label for="instagramUrl">Ссылка на Instagram</label>
+                <input id="instagramUrl" type="url" placeholder="https://instagram.com/username">
+              </div>
+              <label class="upload" for="instagramFiles">
+                <input id="instagramFiles" type="file" accept="image/*" multiple>
+                <span>
+                  <strong>Загрузить скрины профиля или постов</strong>
+                  Можно добавить шапку, сетку, последние посты, посты со слайдами или обложки коротких видео.
+                </span>
+              </label>
+              <div class="file-list" id="fileList"></div>
+              <div class="field">
+                <label for="instagramNotes">Что важно знать о вашем блоге?</label>
+                <textarea id="instagramNotes" placeholder="Например: ниша, продукт, что продаёте, почему хотите усилить блог"></textarea>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="screen" data-screen="${index}">
+          <p class="question-kicker">${question.kicker}</p>
+          <h2 class="question-title">${question.title}</h2>
+          <p class="question-help">${question.help}</p>
+          <div class="options">
+            ${question.options.map((option, optionIndex) => `
+              <button class="option" type="button" data-question="${index}" data-option="${optionIndex}" data-score="${option[2]}">
+                <span class="dot" aria-hidden="true"></span>
+                <span>
+                  <strong>${option[0]}</strong>
+                  <span>${option[1]}</span>
+                </span>
+              </button>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    document.querySelectorAll(".option").forEach((button) => {
+      button.addEventListener("click", () => selectOption(button));
+    });
+
+    document.getElementById("instagramUrl").addEventListener("input", (event) => {
+      state.instagramUrl = event.target.value.trim();
+    });
+
+    document.getElementById("instagramNotes").addEventListener("input", (event) => {
+      state.instagramNotes = event.target.value.trim();
+    });
+
+    document.getElementById("instagramFiles").addEventListener("change", (event) => {
+      state.files = Array.from(event.target.files || []);
+      renderFiles();
+    });
   }
 
-  function updateCounter() {
-    const checked = document.querySelectorAll('.item.checked').length;
-    document.getElementById('count').textContent = checked;
-    document.getElementById('fill').style.width = (checked / TOTAL * 100) + '%';
+  function selectOption(button) {
+    const questionIndex = Number(button.dataset.question);
+    const optionIndex = Number(button.dataset.option);
+    const score = button.dataset.score;
+
+    state.answers[questionIndex] = { optionIndex, score };
+
+    document.querySelectorAll(`[data-question="${questionIndex}"]`).forEach((item) => {
+      item.classList.toggle("selected", item === button);
+    });
+
+    nextBtn.disabled = false;
   }
 
-  function updateDiagnosis() {
-    const checked = document.querySelectorAll('.item.checked').length;
-    const cards = [
-      document.getElementById('diag-0'),
-      document.getElementById('diag-1'),
-      document.getElementById('diag-2')
-    ];
-    cards.forEach(c => c.classList.remove('active'));
+  function renderFiles() {
+    const fileList = document.getElementById("fileList");
+    if (!state.files.length) {
+      fileList.innerHTML = "";
+      return;
+    }
 
-    if (checked <= 5) cards[0].classList.add('active');
-    else if (checked <= 12) cards[1].classList.add('active');
-    else cards[2].classList.add('active');
+    fileList.innerHTML = state.files.map((file) => `<span class="file-pill">${file.name}</span>`).join("");
   }
 
-  // Init
-  updateDiagnosis();
+  function showScreen(index) {
+    state.index = index;
+    resultEl.classList.remove("active");
+    screensEl.style.display = "block";
+    actionsEl.style.display = "flex";
+
+    document.querySelectorAll(".screen").forEach((screen) => {
+      screen.classList.toggle("active", Number(screen.dataset.screen) === index);
+    });
+
+    const isCapture = Boolean(questions[index].capture);
+    const answeredCount = Object.keys(state.answers).length;
+    const progress = Math.round((index / questions.length) * 100);
+
+    stepLabel.textContent = isCapture ? "Финальный шаг" : `Вопрос ${index + 1} из ${questions.length}`;
+    answeredLabel.textContent = `${Math.max(progress, Math.round(answeredCount / questions.length * 100))}% готово`;
+    fillEl.style.width = `${Math.max(progress, Math.round(answeredCount / questions.length * 100))}%`;
+
+    backBtn.style.visibility = index === 0 ? "hidden" : "visible";
+    nextBtn.textContent = isCapture ? "Получить диагноз" : "Дальше";
+    nextBtn.disabled = !isCapture && !state.answers[index];
+  }
+
+  function getDiagnosisKey() {
+    const scores = {
+      system: 0,
+      packaging: 0,
+      memory: 0,
+      sales: 0,
+      visual: 0,
+      balanced: 0
+    };
+
+    Object.values(state.answers).forEach((answer) => {
+      scores[answer.score] += 1;
+    });
+
+    const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+    return sorted[0][1] === 0 ? "balanced" : sorted[0][0];
+  }
+
+  function showResult() {
+    const key = getDiagnosisKey();
+    const diagnosis = diagnoses[key] || diagnoses.balanced;
+
+    screensEl.style.display = "none";
+    actionsEl.style.display = "none";
+    resultEl.classList.add("active");
+    stepLabel.textContent = "Диагноз готов";
+    answeredLabel.textContent = "100% готово";
+    fillEl.style.width = "100%";
+
+    document.getElementById("resultType").textContent = diagnosis.type;
+    document.getElementById("resultTitle").textContent = diagnosis.title;
+    document.getElementById("resultLead").textContent = diagnosis.lead;
+    document.getElementById("resultMistake").textContent = diagnosis.mistake;
+    document.getElementById("resultFix").textContent = diagnosis.fix;
+    document.getElementById("resultStep").textContent = diagnosis.step;
+
+    const noteParts = [];
+    if (state.instagramUrl) noteParts.push("ссылку на Instagram");
+    if (state.files.length) noteParts.push(`${state.files.length} скрин(а)`);
+    if (state.instagramNotes) noteParts.push("контекст по блогу");
+
+    document.getElementById("instagramNote").textContent = noteParts.length
+      ? `Вы добавили ${noteParts.join(", ")}. В полной версии эти данные можно отправлять в AI-разбор для более точной Контентной ОС.`
+      : "Даже без Instagram уже видно главное узкое место. Для полной версии можно будет добавить ссылку или скрины профиля.";
+  }
+
+  backBtn.addEventListener("click", () => {
+    if (state.index > 0) showScreen(state.index - 1);
+  });
+
+  nextBtn.addEventListener("click", () => {
+    if (state.index === questions.length - 1) {
+      showResult();
+      return;
+    }
+
+    showScreen(state.index + 1);
+  });
+
+  document.getElementById("restartBtn").addEventListener("click", () => {
+    state.index = 0;
+    state.answers = {};
+    state.instagramUrl = "";
+    state.instagramNotes = "";
+    state.files = [];
+    document.querySelectorAll(".option").forEach((item) => item.classList.remove("selected"));
+    document.getElementById("instagramUrl").value = "";
+    document.getElementById("instagramNotes").value = "";
+    document.getElementById("instagramFiles").value = "";
+    renderFiles();
+    showScreen(0);
+  });
+
+  renderScreens();
+  showScreen(0);
 </script>
-
 </body>
 </html>
