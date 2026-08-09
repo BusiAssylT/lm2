@@ -3,50 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Диагностика блога: что держит вас в ручном хаосе</title>
+<title>Диагностика ИИ-визуала для блога</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #111827;
+    --ink: #151a1d;
     --panel: #ffffff;
     --paper: #f6f1e8;
-    --paper-strong: #ede3d3;
-    --sage: #58705f;
-    --sage-dark: #32483a;
-    --clay: #b95d3b;
-    --sun: #dba84d;
+    --sage: #547165;
+    --sage-dark: #243c34;
+    --clay: #b85f42;
     --blue: #315f86;
     --muted: #6b7280;
-    --line: rgba(17, 24, 39, 0.12);
-    --soft-line: rgba(17, 24, 39, 0.08);
-    --shadow: 0 24px 70px rgba(32, 38, 46, 0.16);
+    --line: rgba(21, 26, 29, 0.13);
+    --soft-line: rgba(21, 26, 29, 0.08);
+    --shadow: 0 24px 70px rgba(32, 38, 46, 0.14);
     --mono: "JetBrains Mono", monospace;
     --sans: "Manrope", sans-serif;
   }
 
-  * {
-    box-sizing: border-box;
-  }
+  * { box-sizing: border-box; }
 
   body {
     margin: 0;
     min-height: 100vh;
     color: var(--ink);
     background:
-      linear-gradient(135deg, rgba(88, 112, 95, 0.12), transparent 30%),
-      linear-gradient(315deg, rgba(185, 93, 59, 0.13), transparent 34%),
+      linear-gradient(135deg, rgba(84, 113, 101, 0.13), transparent 30%),
+      linear-gradient(315deg, rgba(184, 95, 66, 0.13), transparent 34%),
       var(--paper);
     font-family: var(--sans);
     line-height: 1.55;
   }
 
-  button,
-  input,
-  textarea {
-    font: inherit;
-  }
+  button, input, textarea { font: inherit; }
 
   .shell {
     width: min(1120px, calc(100% - 32px));
@@ -62,13 +54,7 @@
     margin-bottom: 26px;
   }
 
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 0;
-  }
-
+  .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
   .mark {
     display: grid;
     width: 42px;
@@ -81,22 +67,8 @@
     font-weight: 700;
   }
 
-  .brand-text {
-    min-width: 0;
-  }
-
-  .brand-title {
-    margin: 0;
-    font-size: 15px;
-    font-weight: 800;
-    white-space: nowrap;
-  }
-
-  .brand-sub {
-    margin: 1px 0 0;
-    color: var(--muted);
-    font-size: 12px;
-  }
+  .brand-title { margin: 0; font-size: 15px; font-weight: 800; white-space: nowrap; }
+  .brand-sub { margin: 1px 0 0; color: var(--muted); font-size: 12px; }
 
   .timer {
     display: flex;
@@ -110,7 +82,7 @@
 
   .layout {
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
+    grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1.08fr);
     gap: 28px;
     align-items: start;
   }
@@ -121,12 +93,12 @@
     padding: 34px;
     border: 1px solid var(--line);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.62);
+    background: rgba(255, 255, 255, 0.66);
     backdrop-filter: blur(14px);
   }
 
   .eyebrow {
-    margin: 0 0 18px;
+    margin: 0 0 16px;
     color: var(--clay);
     font-family: var(--mono);
     font-size: 12px;
@@ -137,14 +109,14 @@
 
   h1 {
     margin: 0;
-    font-size: clamp(34px, 5vw, 58px);
-    line-height: 1.02;
+    font-size: clamp(32px, 4.8vw, 54px);
+    line-height: 1.03;
     letter-spacing: 0;
   }
 
   .lead {
-    margin: 22px 0 0;
-    max-width: 520px;
+    margin: 20px 0 0;
+    max-width: 560px;
     color: #394150;
     font-size: 17px;
   }
@@ -153,7 +125,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
-    margin-top: 28px;
+    margin-top: 26px;
   }
 
   .signal {
@@ -161,21 +133,11 @@
     padding: 15px;
     border: 1px solid var(--soft-line);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.62);
+    background: rgba(255, 255, 255, 0.64);
   }
 
-  .signal b {
-    display: block;
-    margin-bottom: 6px;
-    color: var(--sage-dark);
-    font-size: 14px;
-  }
-
-  .signal span {
-    display: block;
-    color: var(--muted);
-    font-size: 13px;
-  }
+  .signal b { display: block; margin-bottom: 6px; color: var(--sage-dark); font-size: 14px; }
+  .signal span { display: block; color: var(--muted); font-size: 13px; }
 
   .quiz {
     border: 1px solid var(--line);
@@ -217,14 +179,8 @@
     transition: width 0.25s ease;
   }
 
-  .screen {
-    display: none;
-    padding: 30px 24px 26px;
-  }
-
-  .screen.active {
-    display: block;
-  }
+  .screen { display: none; padding: 30px 24px 26px; }
+  .screen.active { display: block; }
 
   .question-kicker {
     margin: 0 0 10px;
@@ -243,16 +199,8 @@
     letter-spacing: 0;
   }
 
-  .question-help {
-    margin: 0 0 22px;
-    color: var(--muted);
-    font-size: 15px;
-  }
-
-  .options {
-    display: grid;
-    gap: 10px;
-  }
+  .question-help { margin: 0 0 22px; color: var(--muted); font-size: 15px; }
+  .options { display: grid; gap: 10px; }
 
   .option {
     display: grid;
@@ -271,57 +219,25 @@
     transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
   }
 
-  .option:hover {
-    border-color: rgba(88, 112, 95, 0.52);
-    background: #fbfaf7;
-    transform: translateY(-1px);
-  }
-
-  .option.selected {
-    border-color: var(--sage);
-    background: rgba(88, 112, 95, 0.1);
-  }
+  .option:hover { border-color: rgba(84, 113, 101, 0.52); background: #fbfaf7; transform: translateY(-1px); }
+  .option.selected { border-color: var(--sage); background: rgba(84, 113, 101, 0.1); }
 
   .dot {
     width: 20px;
     height: 20px;
     margin-top: 2px;
-    border: 2px solid rgba(17, 24, 39, 0.2);
+    border: 2px solid rgba(21, 26, 29, 0.2);
     border-radius: 50%;
     background: #fff;
   }
 
-  .option.selected .dot {
-    border: 6px solid var(--sage-dark);
-  }
+  .option.selected .dot { border: 6px solid var(--sage-dark); }
+  .option strong { display: block; margin-bottom: 2px; font-size: 15px; }
+  .option span { display: block; color: var(--muted); font-size: 13px; }
 
-  .option strong {
-    display: block;
-    margin-bottom: 2px;
-    font-size: 15px;
-  }
-
-  .option span {
-    display: block;
-    color: var(--muted);
-    font-size: 13px;
-  }
-
-  .capture {
-    display: grid;
-    gap: 18px;
-  }
-
-  .field label {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--sage-dark);
-    font-size: 13px;
-    font-weight: 800;
-  }
-
-  .field input[type="url"],
-  .field textarea {
+  .capture { display: grid; gap: 18px; }
+  .field label { display: block; margin-bottom: 8px; color: var(--sage-dark); font-size: 13px; font-weight: 800; }
+  .field input[type="url"], .field textarea {
     width: 100%;
     border: 1px solid var(--line);
     border-radius: 8px;
@@ -329,65 +245,9 @@
     color: var(--ink);
     background: #fff;
   }
-
-  .field input[type="url"] {
-    height: 48px;
-    padding: 0 14px;
-  }
-
-  .field textarea {
-    min-height: 112px;
-    padding: 14px;
-    resize: vertical;
-  }
-
-  .field input:focus,
-  .field textarea:focus {
-    border-color: var(--sage);
-    box-shadow: 0 0 0 4px rgba(88, 112, 95, 0.13);
-  }
-
-  .upload {
-    display: grid;
-    place-items: center;
-    min-height: 138px;
-    padding: 18px;
-    border: 1px dashed rgba(49, 95, 134, 0.42);
-    border-radius: 8px;
-    color: var(--muted);
-    background: rgba(49, 95, 134, 0.05);
-    text-align: center;
-    cursor: pointer;
-  }
-
-  .upload strong {
-    display: block;
-    margin-bottom: 4px;
-    color: var(--blue);
-  }
-
-  .upload input {
-    display: none;
-  }
-
-  .file-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    min-height: 28px;
-  }
-
-  .file-pill {
-    max-width: 100%;
-    overflow: hidden;
-    padding: 6px 10px;
-    border-radius: 999px;
-    color: var(--sage-dark);
-    background: rgba(88, 112, 95, 0.12);
-    font-size: 12px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+  .field input[type="url"] { height: 48px; padding: 0 14px; }
+  .field textarea { min-height: 112px; padding: 14px; resize: vertical; }
+  .field input:focus, .field textarea:focus { border-color: var(--sage); box-shadow: 0 0 0 4px rgba(84, 113, 101, 0.13); }
 
   .actions {
     display: flex;
@@ -414,65 +274,28 @@
     cursor: pointer;
     transition: transform 0.18s ease, background 0.18s ease;
   }
+  .btn:hover { background: #1d312a; transform: translateY(-1px); }
+  .btn.secondary { color: var(--sage-dark); background: transparent; }
+  .btn.secondary:hover { background: rgba(84, 113, 101, 0.1); }
+  .btn:disabled { cursor: not-allowed; opacity: 0.45; transform: none; }
 
-  .btn:hover {
-    background: #25372c;
-    transform: translateY(-1px);
-  }
+  .result { display: none; padding: 30px 24px 26px; }
+  .result.active { display: block; }
 
-  .btn.secondary {
-    color: var(--sage-dark);
-    background: transparent;
-  }
-
-  .btn.secondary:hover {
-    background: rgba(88, 112, 95, 0.1);
-  }
-
-  .btn:disabled {
-    cursor: not-allowed;
-    opacity: 0.45;
-    transform: none;
-  }
-
-  .result {
-    display: none;
-    padding: 30px 24px 26px;
-  }
-
-  .result.active {
-    display: block;
-  }
-
-  .diagnosis-head {
-    display: grid;
-    gap: 16px;
-    margin-bottom: 22px;
-  }
-
+  .diagnosis-head { display: grid; gap: 16px; margin-bottom: 22px; }
   .type-badge {
     width: fit-content;
     padding: 8px 12px;
     border-radius: 999px;
     color: var(--sage-dark);
-    background: rgba(88, 112, 95, 0.12);
+    background: rgba(84, 113, 101, 0.12);
     font-family: var(--mono);
     font-size: 12px;
     font-weight: 700;
   }
 
-  .result h2 {
-    margin: 0;
-    font-size: clamp(28px, 4vw, 42px);
-    line-height: 1.08;
-    letter-spacing: 0;
-  }
-
-  .result-lead {
-    margin: 0;
-    color: #394150;
-    font-size: 17px;
-  }
+  .result h2 { margin: 0; font-size: clamp(28px, 4vw, 42px); line-height: 1.08; letter-spacing: 0; }
+  .result-lead { margin: 0; color: #394150; font-size: 17px; }
 
   .diagnosis-grid {
     display: grid;
@@ -487,7 +310,6 @@
     border-radius: 8px;
     background: #fbfaf7;
   }
-
   .mini b {
     display: block;
     margin-bottom: 6px;
@@ -497,46 +319,20 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
-
-  .mini p {
-    margin: 0;
-    color: #4b5563;
-    font-size: 14px;
-  }
+  .mini p { margin: 0; color: #4b5563; font-size: 14px; }
 
   .next-step {
     margin-top: 24px;
     padding: 22px;
-    border: 1px solid rgba(185, 93, 59, 0.28);
+    border: 1px solid rgba(184, 95, 66, 0.28);
     border-radius: 8px;
-    background: rgba(185, 93, 59, 0.08);
+    background: rgba(184, 95, 66, 0.08);
   }
-
-  .next-step h3 {
-    margin: 0 0 8px;
-    font-size: 20px;
-  }
-
-  .next-step p {
-    margin: 0 0 18px;
-    color: #4b5563;
-  }
-
-  .next-list {
-    margin: 0 0 18px;
-    padding-left: 20px;
-    color: #4b5563;
-  }
-
-  .next-list li {
-    margin-bottom: 6px;
-  }
-
-  .next-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
+  .next-step h3 { margin: 0 0 8px; font-size: 20px; }
+  .next-step p { margin: 0 0 16px; color: #4b5563; }
+  .next-list { margin: 0 0 18px; padding-left: 20px; color: #4b5563; }
+  .next-list li { margin-bottom: 6px; }
+  .next-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 
   .ghost-link {
     display: inline-flex;
@@ -544,61 +340,29 @@
     justify-content: center;
     min-height: 48px;
     padding: 0 18px;
+    border: 0;
     border-radius: 8px;
     color: var(--sage-dark);
-    background: rgba(255, 255, 255, 0.62);
+    background: rgba(255, 255, 255, 0.72);
     font-weight: 800;
     text-decoration: none;
+    cursor: pointer;
   }
 
-  .note {
-    margin: 18px 0 0;
-    color: var(--muted);
-    font-size: 13px;
-  }
+  .note { margin: 16px 0 0; color: var(--muted); font-size: 13px; }
 
   @media (max-width: 920px) {
-    .layout {
-      grid-template-columns: 1fr;
-    }
-
-    .intro {
-      position: static;
-    }
+    .layout { grid-template-columns: 1fr; }
+    .intro { position: static; }
   }
 
   @media (max-width: 620px) {
-    .shell {
-      width: min(100% - 24px, 1120px);
-      padding-top: 18px;
-    }
-
-    .topbar {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-
-    .intro,
-    .screen,
-    .result {
-      padding: 22px 18px;
-    }
-
-    .signal-board,
-    .diagnosis-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .actions {
-      align-items: stretch;
-      flex-direction: column-reverse;
-      padding: 16px 18px 18px;
-    }
-
-    .btn,
-    .ghost-link {
-      width: 100%;
-    }
+    .shell { width: min(100% - 24px, 1120px); padding-top: 18px; }
+    .topbar { align-items: flex-start; flex-direction: column; }
+    .intro, .screen, .result { padding: 22px 18px; }
+    .signal-board, .diagnosis-grid { grid-template-columns: 1fr; }
+    .actions { align-items: stretch; flex-direction: column-reverse; padding: 16px 18px 18px; }
+    .btn, .ghost-link { width: 100%; }
   }
 </style>
 </head>
@@ -607,56 +371,54 @@
     <header class="topbar">
       <div class="brand">
         <div class="mark">AT</div>
-        <div class="brand-text">
+        <div>
           <p class="brand-title">Асыл Турубаева</p>
-          <p class="brand-sub">блог, ИИ и порядок вместо ручного хаоса</p>
+          <p class="brand-sub">ИИ для блога, визуал и системы</p>
         </div>
       </div>
-      <div class="timer">5 минут · 7 вопросов · персональный вывод</div>
+      <div class="timer">4 минуты · 7 вопросов · персональный вывод</div>
     </header>
 
     <div class="layout">
       <section class="intro" aria-label="Описание диагностики">
         <p class="eyebrow">Бесплатная диагностика</p>
-        <h1>Что держит ваш блог в ручном хаосе?</h1>
-        <p class="lead">Что держит ваш блог в хаосе или вы стараетесь вести блог, но он всё равно не приводит к тем результатам, которых вы ждёте? Пройдите быструю диагностику и поймёте, где именно блог проседает, почему посты не цепляют, какую часть работы стоит упорядочить первой и что нужно сделать, чтобы это наконец-то приносило результат.</p>
+        <h1>ИИ-ассистента создали, а карусели не получаются?</h1>
+        <p class="lead">Не устраивает, как ChatGPT делает фото? Лицо меняется, стиль скачет, шрифты каждый раз разные, а карусели не похожи на ваш блог? Пройдите быструю диагностику и поймите, что именно ломается в вашем ИИ-визуале.</p>
 
         <div class="signal-board">
           <div class="signal">
-            <b>Не PDF</b>
-            <span>Живой вывод по вашим ответам, без универсальных советов на всех.</span>
+            <b>Не про “талант дизайнера”</b>
+            <span>Ищем, где ChatGPT не хватает правил, примеров и понятной задачи.</span>
           </div>
           <div class="signal">
-            <b>Не про дисциплину</b>
-            <span>Ищем не “почему вы ленитесь”, а где не хватает опоры и процесса.</span>
+            <b>Про карусели и обложки</b>
+            <span>Диагностика смотрит на стиль, лицо, шрифты, структуру и правки.</span>
           </div>
           <div class="signal">
-            <b>Можно добавить Instagram</b>
-            <span>Ссылка или скрины помогут точнее увидеть упаковку и точки входа.</span>
+            <b>Без сложных программ</b>
+            <span>Фокус на том, как собрать визуальную основу прямо для ChatGPT.</span>
           </div>
           <div class="signal">
             <b>Следующий шаг</b>
-            <span>После диагноза будет понятно, что именно поменять для вашего блога.</span>
+            <span>Поймёте, что исправить, чтобы визуал перестал собираться с нуля.</span>
           </div>
         </div>
       </section>
 
-      <section class="quiz" aria-label="Квиз диагностики блога">
+      <section class="quiz" aria-label="Квиз диагностики ИИ-визуала">
         <div class="progress">
           <div class="progress-top">
-            <span id="stepLabel">Вопрос 1 из 8</span>
+            <span id="stepLabel">Вопрос 1 из 7</span>
             <span id="answeredLabel">0% готово</span>
           </div>
-          <div class="track" aria-hidden="true">
-            <div class="fill" id="fill"></div>
-          </div>
+          <div class="track" aria-hidden="true"><div class="fill" id="fill"></div></div>
         </div>
 
         <div id="screens"></div>
 
         <div class="result" id="result">
           <div class="diagnosis-head">
-            <div class="type-badge" id="resultType">Тип хаоса</div>
+            <div class="type-badge" id="resultType">Тип визуального хаоса</div>
             <h2 id="resultTitle"></h2>
             <p class="result-lead" id="resultLead"></p>
           </div>
@@ -677,23 +439,21 @@
           </div>
 
           <div class="next-step">
-            <h3>Хотите, чтобы ChatGPT помогал вести блог системно, а не просто писал отдельные посты?</h3>
-            <p>Я подготовила мини-практикум, где показываю, как за один вечер собрать базовую ИИ-опору для блога в ChatGPT.</p>
-            <p>Вы настроите:</p>
+            <h3>Вам нужна не ещё одна “магическая фраза”, а визуальная основа для ChatGPT.</h3>
+            <p>Чтобы карусели, обложки и фото перестали каждый раз выглядеть по-разному, ChatGPT нужно дать опору: стиль, правила, референсы, структуру слайдов и промпты для правок.</p>
+            <p>Я подготовила практикум по ИИ-визуалу, где вы соберёте:</p>
             <ul class="next-list">
-              <li>рабочее пространство для блога;</li>
-              <li>помощника-стратега;</li>
-              <li>хранителя идей;</li>
-              <li>редактора для постов, сторис и Reels;</li>
-              <li>связку, где ваши мысли не теряются, а постепенно превращаются в контент.</li>
+              <li>минимальную визуальную основу блога;</li>
+              <li>чат “Визуальный редактор” со стартовым промптом;</li>
+              <li>промпты для каруселей, обложек и постов;</li>
+              <li>промпты для правок: лицо, стиль, шрифты, цвета, композиция;</li>
+              <li>порядок, как собирать карусели в единой логике примерно за 15 минут.</li>
             </ul>
-            <p>Это не про “волшебный промпт” и не про контент на автопилоте.</p>
-            <p>Это про простую систему, которая помогает не начинать каждый раз с нуля: помнить вашу нишу, аудиторию, продукты, рубрики и идеи.</p>
             <div class="next-actions">
-              <a class="btn" href="https://wa.me/77054897959?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%81%D0%BE%D0%B1%D1%80%D0%B0%D1%82%D1%8C%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%83%20%D0%B4%D0%BB%D1%8F%20%D0%B1%D0%BB%D0%BE%D0%B3%D0%B0" target="_blank" rel="noreferrer">Хочу собрать систему для блога</a>
+              <a class="btn" href="https://busiassylt.github.io/blogsii/visual-praktikum/" target="_blank" rel="noreferrer">Хочу практикум по ИИ-визуалу</a>
               <button class="ghost-link" type="button" id="restartBtn">Пройти заново</button>
             </div>
-            <p class="note" id="instagramNote"></p>
+            <p class="note">Визуал — это входная точка. Дальше его можно связать со стратегией, идеями, текстами, планом и задачами в полноценную ИИ-СММ систему.</p>
           </div>
         </div>
 
@@ -708,151 +468,155 @@
 <script>
   const questions = [
     {
-      kicker: "Точка напряжения",
-      title: "Что сейчас сложнее всего в блоге?",
-      help: "Выберите вариант, который чаще всего останавливает публикации.",
+      kicker: "Главная боль",
+      title: "Что чаще всего не получается в ИИ-визуале?",
+      help: "Выберите то, что раздражает сильнее всего.",
       options: [
-        ["Идеи есть, но они расползаются по заметкам", "Кажется, что мыслей много, а собрать из них систему сложно.", "memory"],
-        ["Не понимаю, как подать мысль так, чтобы её дочитали", "Есть опыт и знания, но начало поста получается тяжёлым.", "packaging"],
-        ["Сложно держать регулярность", "Каждый пост начинается как отдельный подвиг.", "system"],
-        ["Контент есть, но он не приводит к заявкам", "Люди читают, но следующий шаг не очевиден.", "sales"],
-        ["Картинки и короткие видео тормозят весь процесс", "Много времени уходит на обложки, слайды и сценарии.", "visual"]
+        ["Карусели выглядят каждый раз по-разному", "Нет ощущения единого блога и узнаваемой подачи.", "style"],
+        ["ChatGPT меняет лицо или делает меня не похожей на себя", "Образ скачет от картинки к картинке.", "face"],
+        ["Шрифты, цвета и композиция каждый раз разные", "Слайды выглядят как из разных шаблонов.", "consistency"],
+        ["Карусель долго собирается и всё равно выглядит сырой", "Не хватает структуры слайдов и порядка работы.", "carousel"],
+        ["Я не понимаю, что писать в промпт", "Запросы получаются общими, поэтому результат случайный.", "prompt"]
       ]
     },
     {
-      kicker: "Процесс",
-      title: "Как обычно рождается пост?",
+      kicker: "Текущий процесс",
+      title: "Как вы обычно просите ChatGPT сделать визуал?",
       help: "Не идеальный вариант, а как чаще всего происходит на практике.",
       options: [
-        ["Сажусь и придумываю всё с нуля", "Тему, структуру, начало, вывод и продажу решаю заново.", "system"],
-        ["Беру мысль из заметок, но долго ищу угол", "Идея есть, а подача каждый раз требует отдельной сборки.", "packaging"],
-        ["Пишу экспертно, но без эмоционального крючка", "Текст полезный, но не всегда вызывает желание продолжать.", "packaging"],
-        ["Отталкиваюсь от продукта, но не знаю, как продать мягко", "Переход к предложению купить выглядит резким или случайным.", "sales"]
+        ["Пишу коротко: сделай картинку/карусель", "ChatGPT сам додумывает стиль, поэтому результат непредсказуем.", "prompt"],
+        ["Прикладываю фото, но не описываю правила образа", "Модель видит референс, но не понимает, что нельзя менять.", "face"],
+        ["Прошу “в моём стиле”, но стиль нигде не описан", "Для ChatGPT этот стиль существует только у вас в голове.", "style"],
+        ["Каждый раз собираю промпт заново", "Нет заготовок для форматов и правок.", "workflow"]
       ]
     },
     {
-      kicker: "Память",
-      title: "Где живут идеи, кейсы и наблюдения?",
-      help: "Этот вопрос показывает, есть ли у блога внешняя память.",
+      kicker: "Визуальная основа",
+      title: "Есть ли у вас описание визуального стиля для блога?",
+      help: "То, что можно вставить в ChatGPT как правила работы.",
       options: [
-        ["В голове, заметках, директе и случайных скринах", "Всё вроде есть, но быстро найти невозможно.", "memory"],
-        ["В одном документе, но без порядка", "Записано много, но быстро использовать это в постах тяжело.", "memory"],
-        ["В плане постов, который быстро устаревает", "План есть, но он не помогает продолжать мысли из недели в неделю.", "system"],
-        ["Есть база тем и повторяющихся форматов", "Опоры уже есть, их нужно только усилить.", "balanced"]
+        ["Да, есть понятное описание", "Хорошая база. Возможно, не хватает промптов под форматы.", "balanced"],
+        ["Примерно понимаю в голове, но не записано", "ChatGPT не может стабильно повторять то, чего нет в тексте.", "style"],
+        ["Есть референсы, но без правил", "Картинки похожи по настроению, но не превращены в систему.", "consistency"],
+        ["Нет, каждый раз ищу заново", "Визуал начинается с нуля, поэтому скачет.", "workflow"]
       ]
     },
     {
-      kicker: "Впечатление",
-      title: "На что больше похож ваш блог со стороны?",
-      help: "Представьте, что человек впервые открыл профиль.",
+      kicker: "Лицо и образ",
+      title: "Что происходит с вашими фото или образом?",
+      help: "Если вы не используете свои фото, выберите ближайший вариант про визуальный образ.",
       options: [
-        ["На набор отдельных постов", "Полезно, но не видно общей траектории.", "system"],
-        ["На библиотеку полезных постов без входа для новичка", "Сильно по смыслу, но человеку сложно быстро понять, почему это про него.", "packaging"],
-        ["На витрину без понятного пути к покупке", "Посты есть, но человеку не всегда понятно, что делать дальше.", "sales"],
-        ["На живой блог, но визуально всё разное", "Есть энергия, но упаковка не собирает доверие быстро.", "visual"]
+        ["Лицо часто меняется", "Нужны отдельные правила сохранения лица и запреты на изменения.", "face"],
+        ["Образ становится слишком глянцевым или чужим", "ChatGPT уводит вас в шаблонную “нейро-красоту”.", "face"],
+        ["Фото нормальные, но не подходят к блогу", "Не хватает связи между образом, нишей и стилем.", "style"],
+        ["С фото всё более-менее, проблема в каруселях", "Главная зона роста — структура и шаблоны слайдов.", "carousel"]
       ]
     },
     {
-      kicker: "Цель",
-      title: "Что вы хотите получить от блога в ближайший месяц?",
-      help: "Так диагноз станет ближе к реальной бизнес-задаче.",
+      kicker: "Карусели",
+      title: "Где чаще всего ломается карусель?",
+      help: "Подумайте про последние попытки собрать пост со слайдами.",
       options: [
-        ["Больше заявок и продаж", "Нужны посты, которые мягко ведут к покупке.", "sales"],
-        ["Узнаваемость и ощущение экспертности", "Нужно усилить угол подачи и повторяемые смыслы.", "packaging"],
-        ["Стабильный ритм без выгорания", "Нужна система недели, а не вдохновение по настроению.", "system"],
-        ["Порядок в идеях и темах", "Нужно место, где мысли не теряются и превращаются в посты.", "memory"],
-        ["Более сильная визуальная подача", "Нужны сценарии, референсы и правила упаковки.", "visual"]
+        ["На обложке", "Не получается сильный первый слайд и визуальный крючок.", "carousel"],
+        ["На структуре слайдов", "Неясно, что должно быть на каждом слайде.", "carousel"],
+        ["На тексте внутри слайдов", "Слишком много текста или нет визуальной иерархии.", "consistency"],
+        ["На едином стиле", "Слайды не выглядят как одна серия.", "style"],
+        ["На правках", "После исправлений всё становится ещё менее похоже на идею.", "edits"]
       ]
     },
     {
-      kicker: "Сериальность",
-      title: "Есть ли в блоге постоянные темы, которые хочется ждать?",
-      help: "Повторяющиеся темы делают блог узнаваемым и снимают часть ручной нагрузки.",
+      kicker: "Правки",
+      title: "Что происходит, когда вы просите исправить визуал?",
+      help: "Правки часто показывают, есть ли у системы опора.",
       options: [
-        ["Нет, посты живут сами по себе", "Аудитории сложно понять, зачем возвращаться.", "system"],
-        ["Есть постоянные темы, но они не связаны с продажами", "Посты выходят, но не всегда помогают человеку захотеть ваш продукт.", "sales"],
-        ["Есть идеи серий постов, но я их не довожу", "Не хватает недельного ритма и понятных шаблонов.", "system"],
-        ["Есть 2–3 стабильных формата", "Хорошая база. Можно усилить подачу и призывы к действию.", "balanced"]
+        ["Исправляет одно, но ломает другое", "Нужны промпты на точечные правки.", "edits"],
+        ["Меняет лицо, стиль или композицию", "Не хватает запретов: что нельзя трогать.", "face"],
+        ["Делает слишком красиво и не по делу", "Нужны правила: меньше глянца, больше вашего блога.", "style"],
+        ["После 5 правок хочется всё бросить", "Нет короткого процесса: черновик, проверка, точечная правка.", "workflow"]
       ]
     },
     {
-      kicker: "Продажи",
-      title: "Что происходит после полезного поста?",
-      help: "Здесь видно, понимает ли человек, что делать после полезного поста.",
+      kicker: "Желаемый результат",
+      title: "Что вы хотите получить в ближайшие 2 недели?",
+      help: "Так диагноз станет ближе к реальной задаче.",
       options: [
-        ["Ничего. Люди просто читают", "Не хватает ясного следующего шага.", "sales"],
-        ["Я иногда зову в директ, но без системы", "Призыв есть, но он не связан с остальными постами.", "sales"],
-        ["Посты полезные, но я боюсь звучать продающе", "Нужны мягкие призывы к действию и понятный переход к продукту.", "packaging"],
-        ["Есть понятный призыв к действию и повторяющаяся логика", "Продажная часть уже держится лучше среднего.", "balanced"]
+        ["Карусели в едином стиле", "Главная задача — визуальная основа и шаблон слайдов.", "style"],
+        ["Фото и обложки, похожие на меня", "Главная задача — правила лица, образа и запреты.", "face"],
+        ["Понятные промпты для разных форматов", "Нужен набор рабочих запросов, а не один универсальный промпт.", "prompt"],
+        ["Меньше времени на правки", "Нужен процесс точечных исправлений.", "edits"],
+        ["Собирать визуал быстрее", "Нужна мини-система, чтобы не начинать с нуля.", "workflow"]
       ]
-    },
-    {
-      kicker: "Instagram",
-      title: "Хотите добавить Instagram для более точного разбора?",
-      help: "Это необязательно для результата. Можно вставить ссылку, загрузить скрины шапки/постов или коротко описать профиль.",
-      capture: true
     }
   ];
 
   const diagnoses = {
-    system: {
-      type: "Тип: блог без операционной системы",
-      title: "Ваш блог выглядит как набор постов, а не как система.",
-      lead: "Проблема не в идеях и не в дисциплине. Вы каждый раз заново решаете, что публиковать, зачем, в какой форме и к чему вести человека.",
-      mistake: "Блог держится на ручном управлении: нет повторяемого ритма, постоянных тем и понятного плана недели.",
-      fix: "Собрать простую систему: постоянные темы, недельный ритм, роли постов и понятный план.",
-      step: "Выберите 3 постоянные темы: полезная, доверительная и продающая. Дайте каждой один повторяемый формат."
+    style: {
+      type: "Тип: нет визуальной основы",
+      title: "ChatGPT каждый раз придумывает ваш блог заново.",
+      lead: "Проблема не в том, что ИИ “не умеет красиво”. У него нет описанной визуальной основы: настроения, цветов, правил, референсов и запретов.",
+      mistake: "Стиль существует в ощущении, но не переведён в понятные инструкции для ChatGPT.",
+      fix: "Собрать визуальную основу: характер бренда, цвета, композиции, допустимые и недопустимые решения.",
+      step: "Опишите 5 слов про стиль блога и 5 вещей, которые в визуале точно нельзя делать."
     },
-    packaging: {
-      type: "Тип: сильный эксперт без эмоционального входа",
-      title: "Вы пишете как эксперт, но не оставляете точек эмоционального входа.",
-      lead: "Смыслы есть, но человеку нужно быстрее понять: почему это про него, зачем читать дальше и что изменится после вашего подхода.",
-      mistake: "Польза появляется раньше контекста. Человек видит знание, но не всегда чувствует личное попадание.",
-      fix: "Усилить подачу мысли: начало поста, понятный угол, контрасты, примеры из жизни клиента и повторяющиеся форматы.",
-      step: "Перед каждым постом дописывайте одну строку: “человек узнает себя здесь, потому что...”."
+    face: {
+      type: "Тип: лицо и образ не защищены",
+      title: "ChatGPT меняет вас, потому что не знает, что нельзя трогать.",
+      lead: "Если не задать правила сохранения лица, возраста, мимики, образа и степени реалистичности, модель будет улучшать картинку по своему вкусу.",
+      mistake: "Фото используется как референс, но без правил: что сохранить, что не менять и какой образ считать вашим.",
+      fix: "Собрать блок “мой образ”: лицо, волосы, стиль одежды, настроение, запреты и правила правок.",
+      step: "Перед генерацией допишите: “сохрани лицо, возраст, черты, мимику и общий образ; не делай глянец и не меняй идентичность”."
     },
-    memory: {
-      type: "Тип: идеи есть, внешней памяти нет",
-      title: "У вас не проблема с идеями. У вас проблема с хранением и извлечением мыслей.",
-      lead: "Материала для постов достаточно, но он живёт в разных местах. Поэтому мозг каждый раз тратит силы не на смысл, а на поиск и сборку.",
-      mistake: "Идеи, кейсы, фразы клиентов и наблюдения не собраны в одно рабочее место.",
-      fix: "Сделать банк идей: темы, боли потенциальных клиентов, кейсы, варианты подачи, призывы к действию и статус каждой идеи.",
-      step: "Соберите 20 сырых мыслей в один документ и разложите их по трём полкам: боль, доказательство, продажа."
+    consistency: {
+      type: "Тип: нет правил единства",
+      title: "Карусели выглядят как набор разных картинок, а не как один пост.",
+      lead: "Шрифты, цвета, отступы и композиции скачут, когда у ChatGPT нет правил визуальной иерархии и структуры слайдов.",
+      mistake: "Каждый слайд создаётся отдельно, без единого шаблона и ограничений.",
+      fix: "Задать правила: обложка, текстовые слайды, акцентные слайды, количество текста, шрифтовая логика.",
+      step: "Выберите один шаблон: обложка, 4 смысловых слайда, финальный слайд с действием."
     },
-    sales: {
-      type: "Тип: посты без понятного пути к покупке",
-      title: "Люди могут читать вас, но не понимать, куда идти дальше.",
-      lead: "Вовлечение само по себе не продаёт. Нужна логика переходов: от узнавания проблемы к доверию, желанию решения и понятному действию.",
-      mistake: "Призыв к действию появляется случайно или слишком поздно, а продукт не связан с постоянными темами блога.",
-      fix: "Связать постоянные темы с предложением: какие посты знакомят, какие объясняют, какие снимают сомнения, какие зовут сделать следующий шаг.",
-      step: "Для каждой постоянной темы допишите один мягкий призыв к действию: сохранить, ответить, написать кодовое слово, перейти к уроку."
+    carousel: {
+      type: "Тип: карусель без сценария",
+      title: "Вы пытаетесь сделать дизайн до того, как собрали структуру.",
+      lead: "Карусель быстрее собирается, когда сначала есть логика слайдов: крючок, проблема, переосмысление, решение, действие.",
+      mistake: "ChatGPT получает задачу “сделай карусель”, но не получает сценарий, роль каждого слайда и визуальную задачу.",
+      fix: "Сначала собрать структуру слайдов, потом визуальный промпт, потом правки.",
+      step: "Перед картинками попросите ChatGPT написать: цель карусели, 6 слайдов, текст на каждом, визуальная роль каждого слайда."
     },
-    visual: {
-      type: "Тип: смысл есть, упаковка тормозит публикации",
-      title: "Ваши посты застревают на форме: картинки, короткие видео, обложки и сценарии съедают энергию.",
-      lead: "Когда нет правил визуальной сборки, каждый пост превращается в отдельный дизайн-проект. Это замедляет регулярность и размывает узнаваемость.",
-      mistake: "Нет 2–3 визуальных шаблонов и сценарных заготовок, которые можно повторять без долгих решений.",
-      fix: "Собрать простые правила для визуала: форматы обложек, сценарии коротких видео, примеры и запросы для помощника.",
-      step: "Выберите один стиль обложек, один формат короткого видео и один шаблон поста со слайдами на ближайшие 7 дней."
+    prompt: {
+      type: "Тип: слишком общие промпты",
+      title: "Вы просите результат, но не даёте ChatGPT систему координат.",
+      lead: "Запросы вроде “сделай красиво” или “в моём стиле” дают случайный визуал, потому что в них нет конкретики.",
+      mistake: "В промпте нет цели, формата, стиля, ограничений, референсов, текста и правил правок.",
+      fix: "Собрать набор промптов под задачи: карусель, обложка, одиночный пост, фото, правка.",
+      step: "Используйте структуру: задача → формат → стиль → ограничения → что нельзя менять → что исправить."
+    },
+    edits: {
+      type: "Тип: правки ломают результат",
+      title: "ИИ исправляет одно и случайно разрушает всё остальное.",
+      lead: "Так бывает, когда правка звучит слишком широко. ChatGPT нужно говорить, что именно менять и что обязательно сохранить.",
+      mistake: "Правки не точечные: нет формулы “измени только это, сохрани всё остальное”.",
+      fix: "Сделать набор коротких промптов на правки: лицо, цвет, шрифт, композиция, текст, стиль.",
+      step: "Начинайте правку словами: “измени только…, сохрани без изменений…”."
+    },
+    workflow: {
+      type: "Тип: нет процесса визуальной сборки",
+      title: "Вы каждый раз начинаете визуал с нуля.",
+      lead: "Даже хорошие промпты не спасают, если нет порядка: основа, структура, генерация, проверка, точечные правки.",
+      mistake: "Визуал держится на вдохновении и ручных попытках, а не на повторяемом маршруте.",
+      fix: "Собрать чат “Визуальный редактор” и работать по одному маршруту для каждого формата.",
+      step: "Создайте отдельный чат для визуала и закрепите в нём правила стиля, форматов и правок."
     },
     balanced: {
       type: "Тип: база уже есть",
-      title: "У вас уже есть опоры. Следующий рост даст не больше постов, а более точная система.",
-      lead: "Похоже, блог не в хаосе, но отдельные процессы можно собрать плотнее: память идей, повторяющиеся темы, призывы к действию и недельный ритм.",
-      mistake: "Опоры есть, но они могут жить отдельно друг от друга, без единой рабочей архитектуры.",
-      fix: "Соединить существующие темы, форматы и продукты в одну понятную систему.",
-      step: "Проверьте текущие постоянные темы: у каждой должна быть роль, частота, пример призыва к действию и связь с продуктом."
+      title: "У вас уже есть визуальные опоры, но их нужно собрать в систему.",
+      lead: "Похоже, вы не начинаете с полного нуля. Следующий шаг — превратить ощущения, референсы и удачные примеры в рабочую инструкцию для ChatGPT.",
+      mistake: "Опоры есть, но они могут жить отдельно: фото отдельно, референсы отдельно, промпты отдельно.",
+      fix: "Собрать всё в визуальную основу и загрузить её в проект/чат.",
+      step: "Соберите 3 удачных примера и опишите, что именно в них нужно повторять."
     }
   };
 
-  const state = {
-    index: 0,
-    answers: {},
-    instagramUrl: "",
-    instagramNotes: "",
-    files: []
-  };
-
+  const state = { index: 0, answers: {} };
   const screensEl = document.getElementById("screens");
   const resultEl = document.getElementById("result");
   const actionsEl = document.getElementById("actions");
@@ -863,95 +627,40 @@
   const answeredLabel = document.getElementById("answeredLabel");
 
   function renderScreens() {
-    screensEl.innerHTML = questions.map((question, index) => {
-      if (question.capture) {
-        return `
-          <div class="screen" data-screen="${index}">
-            <p class="question-kicker">${question.kicker}</p>
-            <h2 class="question-title">${question.title}</h2>
-            <p class="question-help">${question.help}</p>
-            <div class="capture">
-              <div class="field">
-                <label for="instagramUrl">Ссылка на Instagram</label>
-                <input id="instagramUrl" type="url" placeholder="https://instagram.com/username">
-              </div>
-              <label class="upload" for="instagramFiles">
-                <input id="instagramFiles" type="file" accept="image/*" multiple>
-                <span>
-                  <strong>Загрузить скрины профиля или постов</strong>
-                  Можно добавить шапку, сетку, последние посты, посты со слайдами или обложки коротких видео.
-                </span>
-              </label>
-              <div class="file-list" id="fileList"></div>
-              <div class="field">
-                <label for="instagramNotes">Что важно знать о вашем блоге?</label>
-                <textarea id="instagramNotes" placeholder="Например: ниша, продукт, что продаёте, почему хотите усилить блог"></textarea>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-
-      return `
-        <div class="screen" data-screen="${index}">
-          <p class="question-kicker">${question.kicker}</p>
-          <h2 class="question-title">${question.title}</h2>
-          <p class="question-help">${question.help}</p>
-          <div class="options">
-            ${question.options.map((option, optionIndex) => `
-              <button class="option" type="button" data-question="${index}" data-option="${optionIndex}" data-score="${option[2]}">
-                <span class="dot" aria-hidden="true"></span>
-                <span>
-                  <strong>${option[0]}</strong>
-                  <span>${option[1]}</span>
-                </span>
-              </button>
-            `).join("")}
-          </div>
+    screensEl.innerHTML = questions.map((question, index) => `
+      <div class="screen" data-screen="${index}">
+        <p class="question-kicker">${question.kicker}</p>
+        <h2 class="question-title">${question.title}</h2>
+        <p class="question-help">${question.help}</p>
+        <div class="options">
+          ${question.options.map((option, optionIndex) => `
+            <button class="option" type="button" data-question="${index}" data-option="${optionIndex}" data-score="${option[2]}">
+              <span class="dot" aria-hidden="true"></span>
+              <span>
+                <strong>${option[0]}</strong>
+                <span>${option[1]}</span>
+              </span>
+            </button>
+          `).join("")}
         </div>
-      `;
-    }).join("");
+      </div>
+    `).join("");
 
     document.querySelectorAll(".option").forEach((button) => {
       button.addEventListener("click", () => selectOption(button));
-    });
-
-    document.getElementById("instagramUrl").addEventListener("input", (event) => {
-      state.instagramUrl = event.target.value.trim();
-    });
-
-    document.getElementById("instagramNotes").addEventListener("input", (event) => {
-      state.instagramNotes = event.target.value.trim();
-    });
-
-    document.getElementById("instagramFiles").addEventListener("change", (event) => {
-      state.files = Array.from(event.target.files || []);
-      renderFiles();
     });
   }
 
   function selectOption(button) {
     const questionIndex = Number(button.dataset.question);
     const optionIndex = Number(button.dataset.option);
-    const score = button.dataset.score;
-
-    state.answers[questionIndex] = { optionIndex, score };
+    state.answers[questionIndex] = { optionIndex, score: button.dataset.score };
 
     document.querySelectorAll(`[data-question="${questionIndex}"]`).forEach((item) => {
       item.classList.toggle("selected", item === button);
     });
 
     nextBtn.disabled = false;
-  }
-
-  function renderFiles() {
-    const fileList = document.getElementById("fileList");
-    if (!state.files.length) {
-      fileList.innerHTML = "";
-      return;
-    }
-
-    fileList.innerHTML = state.files.map((file) => `<span class="file-pill">${file.name}</span>`).join("");
   }
 
   function showScreen(index) {
@@ -964,41 +673,26 @@
       screen.classList.toggle("active", Number(screen.dataset.screen) === index);
     });
 
-    const isCapture = Boolean(questions[index].capture);
     const answeredCount = Object.keys(state.answers).length;
     const progress = Math.round((index / questions.length) * 100);
 
-    stepLabel.textContent = isCapture ? "Финальный шаг" : `Вопрос ${index + 1} из ${questions.length}`;
+    stepLabel.textContent = `Вопрос ${index + 1} из ${questions.length}`;
     answeredLabel.textContent = `${Math.max(progress, Math.round(answeredCount / questions.length * 100))}% готово`;
     fillEl.style.width = `${Math.max(progress, Math.round(answeredCount / questions.length * 100))}%`;
-
     backBtn.style.visibility = index === 0 ? "hidden" : "visible";
-    nextBtn.textContent = isCapture ? "Получить диагноз" : "Дальше";
-    nextBtn.disabled = !isCapture && !state.answers[index];
+    nextBtn.textContent = index === questions.length - 1 ? "Получить диагноз" : "Дальше";
+    nextBtn.disabled = !state.answers[index];
   }
 
   function getDiagnosisKey() {
-    const scores = {
-      system: 0,
-      packaging: 0,
-      memory: 0,
-      sales: 0,
-      visual: 0,
-      balanced: 0
-    };
-
-    Object.values(state.answers).forEach((answer) => {
-      scores[answer.score] += 1;
-    });
-
+    const scores = { style: 0, face: 0, consistency: 0, carousel: 0, prompt: 0, edits: 0, workflow: 0, balanced: 0 };
+    Object.values(state.answers).forEach((answer) => { scores[answer.score] += 1; });
     const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
     return sorted[0][1] === 0 ? "balanced" : sorted[0][0];
   }
 
   function showResult() {
-    const key = getDiagnosisKey();
-    const diagnosis = diagnoses[key] || diagnoses.balanced;
-
+    const diagnosis = diagnoses[getDiagnosisKey()] || diagnoses.balanced;
     screensEl.style.display = "none";
     actionsEl.style.display = "none";
     resultEl.classList.add("active");
@@ -1012,15 +706,6 @@
     document.getElementById("resultMistake").textContent = diagnosis.mistake;
     document.getElementById("resultFix").textContent = diagnosis.fix;
     document.getElementById("resultStep").textContent = diagnosis.step;
-
-    const noteParts = [];
-    if (state.instagramUrl) noteParts.push("ссылку на Instagram");
-    if (state.files.length) noteParts.push(`${state.files.length} скрин(а)`);
-    if (state.instagramNotes) noteParts.push("контекст по блогу");
-
-    document.getElementById("instagramNote").textContent = noteParts.length
-      ? `Вы добавили ${noteParts.join(", ")}. Если захотите разобрать свой блог глубже, после практикума можно будет прийти на индивидуальный разбор: посмотрим вашу ситуацию и поймём, что вам нужнее — настройка ChatGPT, мини-система или полноценный Карманный СММщик.`
-      : "Даже без ссылки на Instagram уже видно главное узкое место. А если захотите разобрать свой блог глубже, после практикума можно будет прийти на индивидуальный разбор: посмотрим вашу ситуацию и поймём, что вам нужнее — настройка ChatGPT, мини-система или полноценный Карманный СММщик.";
   }
 
   backBtn.addEventListener("click", () => {
@@ -1028,25 +713,14 @@
   });
 
   nextBtn.addEventListener("click", () => {
-    if (state.index === questions.length - 1) {
-      showResult();
-      return;
-    }
-
-    showScreen(state.index + 1);
+    if (state.index === questions.length - 1) showResult();
+    else showScreen(state.index + 1);
   });
 
   document.getElementById("restartBtn").addEventListener("click", () => {
     state.index = 0;
     state.answers = {};
-    state.instagramUrl = "";
-    state.instagramNotes = "";
-    state.files = [];
     document.querySelectorAll(".option").forEach((item) => item.classList.remove("selected"));
-    document.getElementById("instagramUrl").value = "";
-    document.getElementById("instagramNotes").value = "";
-    document.getElementById("instagramFiles").value = "";
-    renderFiles();
     showScreen(0);
   });
 
