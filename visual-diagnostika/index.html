@@ -335,6 +335,17 @@
   .next-list li::marker { color: var(--clay); font-weight: 800; }
   .next-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 
+  .offer-price {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    margin: 18px 0 8px;
+  }
+  .offer-price-label { color: #4b5563; font-size: 15px; }
+  .offer-price del { color: var(--muted); font-size: 18px; }
+  .offer-price strong { color: var(--clay); font-size: clamp(26px, 6vw, 34px); }
+
   .offer-countdown {
     display: grid;
     gap: 7px;
@@ -460,7 +471,7 @@
 
           <div class="next-step">
             <h3>ChatGPT не запоминает ваш вкус сам. Но его можно один раз настроить.</h3>
-            <p>На практикуме вы объясните ChatGPT, какое оформление вам нравится, сохраните эти правила и сразу проверите их на своей карусели. Вы создадите ИИ-ассистента, который будет делать карусели и обложки так, как вам нужно, правильно понимать ваши запросы и генерировать визуал по вашему вкусу.</p>
+            <p>На практикуме по визуалу вы объясните ChatGPT, какое оформление вам нравится, сохраните эти правила и сразу проверите их на своей карусели. Вы создадите ИИ-ассистента, который будет делать карусели и обложки так, как вам нужно, правильно понимать ваши запросы и генерировать визуал по вашему вкусу.</p>
             <p>На практикуме вы:</p>
             <ol class="next-list">
               <li>узнаете, как правильно оформлять правила для ИИ-ассистента, чтобы он вас понимал;</li>
@@ -474,6 +485,11 @@
             </ol>
             <p>После этого не нужно будет каждый раз собирать оформление с нуля. Правила и готовые промпты уже сохранены. Для следующей карусели, обложки или одиночного поста достаточно открыть чат с включённым режимом «Мой визуал» и вставить готовый текст.</p>
             <p data-offer-active>Хотите так же? Тогда только сегодня для вас действует скидка 40% — за то, что вы проявили интерес к нашему продукту.</p>
+            <div class="offer-price" data-offer-price>
+              <span class="offer-price-label">Стоимость практикума:</span>
+              <del data-offer-old-price>25 000 ₸</del>
+              <strong data-offer-current-price>15 000 ₸</strong>
+            </div>
             <div class="offer-countdown" data-visual-offer data-offer-state="loading">
               <span data-offer-label>До окончания скидки осталось:</span>
               <strong data-offer-clock>24:00:00</strong>
@@ -783,6 +799,8 @@
     const label = root.querySelector('[data-offer-label]');
     const status = root.querySelector('[data-offer-status]');
     const activeCopy = document.querySelector('[data-offer-active]');
+    const oldPrice = document.querySelector('[data-offer-old-price]');
+    const currentPrice = document.querySelector('[data-offer-current-price]');
     const storageKey = 'visual_praktikum_offer_id';
     const savedVisitorId = window.localStorage.getItem(storageKey);
     const endpoint = new URL('https://pocketsmm.com/api/visual-praktikum-timer');
@@ -802,6 +820,8 @@
       label.textContent = 'Срок действия скидки завершился';
       status.textContent = 'Напишите нам в WhatsApp, чтобы уточнить актуальные условия.';
       if (activeCopy) activeCopy.hidden = true;
+      if (oldPrice) oldPrice.hidden = true;
+      if (currentPrice) currentPrice.textContent = '25 000 ₸';
     };
 
     fetch(endpoint, { cache: 'no-store', headers: { Accept: 'application/json' } })
@@ -817,6 +837,9 @@
         }
 
         root.dataset.offerState = 'active';
+        if (activeCopy) activeCopy.hidden = false;
+        if (oldPrice) oldPrice.hidden = false;
+        if (currentPrice) currentPrice.textContent = '15 000 ₸';
         status.textContent = 'Отсчёт продолжится при следующем посещении страницы.';
         const deadline = Date.now() + Number(data.remainingSeconds) * 1000;
         let intervalId = null;
@@ -837,6 +860,9 @@
         clock.textContent = '—';
         label.textContent = 'Не удалось проверить время скидки';
         status.textContent = 'Напишите нам в WhatsApp, чтобы уточнить актуальные условия.';
+        if (activeCopy) activeCopy.hidden = true;
+        if (oldPrice) oldPrice.hidden = true;
+        if (currentPrice) currentPrice.textContent = '25 000 ₸';
       });
   })();
 </script>
