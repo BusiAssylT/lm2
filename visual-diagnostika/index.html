@@ -121,6 +121,22 @@
     font-size: 17px;
   }
 
+  .diagnostic-offer {
+    display: grid;
+    gap: 8px;
+    margin-top: 22px;
+    padding: 16px 18px;
+    border: 1px solid rgba(184, 95, 66, 0.28);
+    border-radius: 8px;
+    background: rgba(255, 248, 244, 0.82);
+  }
+  .diagnostic-offer-label { color: var(--sage-dark); font-size: 14px; font-weight: 800; }
+  .diagnostic-offer-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px 14px; }
+  .diagnostic-offer-price del { color: var(--muted); font-size: 16px; }
+  .diagnostic-offer-price strong { color: var(--clay); font-size: 24px; }
+  .diagnostic-offer-clock { color: var(--sage-dark); font-family: var(--mono); font-size: clamp(24px, 5vw, 32px); font-weight: 800; }
+  .diagnostic-offer small { color: var(--muted); }
+
   .signal-board {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -416,6 +432,17 @@
         <h1>ИИ-ассистента создали, а карусели не получаются?</h1>
         <p class="lead">Не устраивает, как ChatGPT делает фото — результат на вас не похож? Пройдите быструю диагностику и поймёте, что делаете не так.</p>
 
+        <div class="diagnostic-offer" data-diagnostic-offer>
+          <span class="diagnostic-offer-label">Успейте пройти диагностику бесплатно</span>
+          <div class="diagnostic-offer-price">
+            <del>5 000 ₸</del>
+            <strong>Бесплатно</strong>
+          </div>
+          <span>Бесплатный доступ закончится через:</span>
+          <strong class="diagnostic-offer-clock" data-diagnostic-clock>24:00:00</strong>
+          <small>Сейчас диагностика доступна бесплатно.</small>
+        </div>
+
         <div class="signal-board">
           <div class="signal">
             <b>Не нужно уметь рисовать</b>
@@ -491,8 +518,8 @@
               <strong data-offer-current-price>15 000 ₸</strong>
             </div>
             <div class="offer-countdown" data-visual-offer data-offer-state="loading">
-              <span data-offer-label>До окончания скидки осталось:</span>
-              <strong data-offer-clock>24:00:00</strong>
+              <span data-offer-label>Скидка сгорит через:</span>
+              <strong data-offer-clock>30:00</strong>
               <small data-offer-status>Проверяем время действия предложения…</small>
             </div>
             <p>Есть вопросы или хотите на практикум? Нажмите кнопку ниже.</p>
@@ -760,14 +787,14 @@
       return `${questionIndex + 1}. ${option[0]}`;
     }).filter(Boolean);
     const whatsappMessage = [
-      'Здравствуйте! Я прошла диагностику оформления блога с ChatGPT на сайте.',
+      'Здравствуйте! Я прошла диагностику по визуалу',
       '',
       `Мой результат: ${diagnosis.title}`,
       '',
       'Мои ответы:',
       ...selectedAnswers,
       '',
-      'Хочу узнать подробнее про практикум «Карусели и обложки в вашем стиле с ChatGPT».'
+      '[НАПИШИТЕ ЗДЕСЬ СВОЙ ВОПРОС]'
     ].join('\n');
     document.getElementById('practiceWhatsApp').href = `https://wa.me/77073343785?text=${encodeURIComponent(whatsappMessage)}`;
   }
@@ -792,6 +819,43 @@
   showScreen(0);
 
   (() => {
+    const clock = document.querySelector('[data-diagnostic-clock]');
+    if (!clock) return;
+
+    const cycleDuration = 24 * 60 * 60 * 1000;
+    const storageKey = 'visual_diagnosis_free_cycle_started_at';
+    const now = Date.now();
+    let startedAt = Number(window.localStorage.getItem(storageKey));
+    if (!Number.isFinite(startedAt) || startedAt <= 0 || now - startedAt >= cycleDuration) {
+      startedAt = now;
+      window.localStorage.setItem(storageKey, String(startedAt));
+    }
+
+    const formatTime = (milliseconds) => {
+      const seconds = Math.max(0, Math.ceil(milliseconds / 1000));
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const secs = seconds % 60;
+      const values = hours > 0 ? [hours, minutes, secs] : [minutes, secs];
+      return values.map((value) => String(value).padStart(2, '0')).join(':');
+    };
+
+    const updateClock = () => {
+      const currentTime = Date.now();
+      let remaining = cycleDuration - (currentTime - startedAt);
+      if (remaining <= 0) {
+        startedAt = currentTime;
+        window.localStorage.setItem(storageKey, String(startedAt));
+        remaining = cycleDuration;
+      }
+      clock.textContent = formatTime(remaining);
+    };
+
+    updateClock();
+    window.setInterval(updateClock, 1000);
+  })();
+
+  (() => {
     const root = document.querySelector('[data-visual-offer]');
     if (!root) return;
 
@@ -811,7 +875,8 @@
       const hours = Math.floor(safe / 3600);
       const minutes = Math.floor((safe % 3600) / 60);
       const secs = safe % 60;
-      return [hours, minutes, secs].map((value) => String(value).padStart(2, '0')).join(':');
+      const values = hours > 0 ? [hours, minutes, secs] : [minutes, secs];
+      return values.map((value) => String(value).padStart(2, '0')).join(':');
     };
 
     const showExpired = () => {
