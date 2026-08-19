@@ -865,7 +865,7 @@
     const activeCopy = document.querySelector('[data-offer-active]');
     const oldPrice = document.querySelector('[data-offer-old-price]');
     const currentPrice = document.querySelector('[data-offer-current-price]');
-    const storageKey = 'visual_praktikum_offer_id';
+    const storageKey = 'visual_praktikum_offer_30m_id';
     const savedVisitorId = window.localStorage.getItem(storageKey);
     const endpoint = new URL('https://pocketsmm.com/api/visual-praktikum-timer');
     if (savedVisitorId) endpoint.searchParams.set('visitorId', savedVisitorId);
