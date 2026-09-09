@@ -556,6 +556,59 @@
     margin-bottom: 6px;
   }
 
+  .offer-price {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    margin: 4px 0 8px;
+  }
+
+  .offer-price-label {
+    color: #4b5563;
+    font-size: 15px;
+  }
+
+  .offer-price del {
+    color: var(--muted);
+    font-size: 18px;
+  }
+
+  .offer-price strong {
+    color: var(--clay);
+    font-size: clamp(26px, 6vw, 34px);
+  }
+
+  .offer-countdown {
+    display: grid;
+    gap: 7px;
+    margin: 18px 0;
+    padding: 16px 18px;
+    border: 1px solid rgba(185, 93, 59, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.68);
+  }
+
+  .offer-countdown span {
+    color: #4b5563;
+    font-size: 14px;
+  }
+
+  .offer-countdown strong {
+    color: var(--clay);
+    font-family: var(--mono);
+    font-size: clamp(28px, 7vw, 42px);
+    letter-spacing: 0.04em;
+  }
+
+  .offer-countdown small {
+    color: var(--muted);
+  }
+
+  .offer-countdown[data-offer-state="expired"] strong {
+    color: var(--muted);
+  }
+
   .next-actions {
     display: flex;
     flex-wrap: wrap;
@@ -643,7 +696,7 @@
       <section class="intro" aria-label="Описание диагностики">
         <p class="eyebrow">Бесплатная диагностика</p>
         <h1>Работает ли ваш блог системно или в ручном хаосе?</h1>
-        <p class="lead">Вы стараетесь вести блог, но он всё равно не приводит к тем результатам, которых вы ждёте? Пройдите быструю диагностику и проверьте, где именно блог проседает: в системе, подаче смыслов, продажах или визуале — и что стоит упорядочить первым.</p>
+        <p class="lead">Вы стараетесь вести блог, но на него уходит много времени, бывает, что вы устаёте и потом не ведёте его вовсе? Пройдите быстрый тест-опрос и проверьте, где именно вы тратите слишком много времени на блог: в системе, подаче смыслов или визуале — и что стоит упорядочить первым.</p>
 
         <div class="signal-board">
           <div class="signal">
@@ -706,22 +759,37 @@
           </div>
 
           <div class="next-step">
-            <h3>Хотите собрать мини-систему для блога с ИИ на практике?</h3>
-            <p>После диагностики становится понятнее, где блог проседает: в идеях, структуре, текстах, регулярности, визуале или связи с продуктом. Следующий шаг — не просто узнать проблему, а собрать рабочую опору в ChatGPT.</p>
-            <p>В практикуме «Настройка ИИ под мини-систему для блога» вы за один вечер настроите базовую систему, которая помогает вести блог без постоянного старта с нуля.</p>
-            <p>Вы соберёте:</p>
-            <ul class="next-list">
-              <li>отдельное рабочее пространство для блога;</li>
-              <li>базовую инструкцию, чтобы ИИ понимал вашу нишу, продукт, аудиторию и стиль;</li>
-              <li>помощника-стратега, хранителя идей и редактора контента;</li>
-              <li>базовую настройку по созданию каруселей, обложек для видео и сторисов;</li>
-              <li>одну универсальную команду, которая включает визуальный режим в рабочем чате;</li>
-              <li>понятный маршрут: идея → структура → пост, Reels, сторис или карусель;</li>
-              <li>первый черновик материала и чек-лист, по которому его можно быстро улучшить.</li>
-            </ul>
-            <p>Это не про “волшебный промпт” и не про контент на автопилоте. Это практичная настройка системы в ИИ, которая помогает хранить контекст блога, не терять мысли и быстрее доводить идеи до публикации.</p>
+            <h3>ChatGPT не запоминает ваш вкус сам. Но его можно один раз настроить.</h3>
+            <p>На практикуме по визуалу вы объясните ChatGPT, какое оформление вам нравится, сохраните эти правила и сразу проверите их на своей карусели.</p>
+            <p>Начните с самого заметного участка блога и освободите своё время. За короткое занятие вы создадите ИИ-ассистента, который будет делать карусели и обложки так, как вам нужно, правильно понимать ваши запросы и генерировать визуал по вашему вкусу. Больше не придётся постоянно фотографироваться самой, искать локации и тратить время на повторяющуюся рутину.</p>
+            <p>На практикуме вы:</p>
+            <ol class="next-list">
+              <li>узнаете, как оформлять правила для ИИ-ассистента, чтобы он вас правильно понимал;</li>
+              <li>создадите режим «Мой визуал» в рабочем чате;</li>
+              <li>получите готовый промпт для генерации карусели;</li>
+              <li>получите готовые промпты для создания обложки и одиночного поста;</li>
+              <li>узнаете, как вставлять свои фотографии в карусели, обложки и одиночные посты;</li>
+              <li>получите готовые промпты для создания фото и точечных исправлений;</li>
+              <li>выстроите понятный порядок работы;</li>
+              <li>соберёте свою первую готовую к публикации карусель;</li>
+              <li>настроите процесс так, чтобы на визуал уходило 10-15 минут вместо долгих переделок;</li>
+              <li>получите доступ в чат с обратной связью.</li>
+            </ol>
+            <p>После этого не нужно будет каждый раз собирать оформление с нуля. Правила и готовые промпты уже сохранены. Для следующей карусели, обложки или одиночного поста достаточно открыть чат с включённым режимом «Мой визуал» и вставить готовый текст.</p>
+            <p>Если по ответам видно, что визуал отнимает много сил или выглядит не так, как хочется, начните с него.</p>
+            <p data-offer-active>Сейчас для вас действует скидка 60% на практикум по визуалу.</p>
+            <div class="offer-price" data-offer-price>
+              <span class="offer-price-label">Стоимость:</span>
+              <del data-offer-old-price>25 000 ₸</del>
+              <strong data-offer-current-price>10 000 ₸</strong>
+            </div>
+            <div class="offer-countdown" data-visual-offer data-offer-state="active">
+              <span data-offer-label>Скидка сгорит через:</span>
+              <strong data-offer-clock>30:00</strong>
+              <small data-offer-status>Отсчёт начался после прохождения диагностики.</small>
+            </div>
             <div class="next-actions">
-              <a class="btn" href="https://wa.me/77073343785?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%83%D0%B7%D0%BD%D0%B0%D1%82%D1%8C%20%D0%BF%D1%80%D0%BE%20%D0%BF%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D0%BA%D1%83%D0%BC%20%22%D0%9D%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0%20%D0%98%D0%98%20%D0%BF%D0%BE%D0%B4%20%D0%BC%D0%B8%D0%BD%D0%B8-%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%83%20%D0%B4%D0%BB%D1%8F%20%D0%B1%D0%BB%D0%BE%D0%B3%D0%B0%22" target="_blank" rel="noreferrer">Хочу на практикум</a>
+              <a class="btn" href="https://wa.me/77073343785?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%BD%D0%B0%20%D0%BF%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D0%BA%D1%83%D0%BC%20%D0%BF%D0%BE%20%D0%B2%D0%B8%D0%B7%D1%83%D0%B0%D0%BB%D1%83" target="_blank" rel="noreferrer">Хочу на практикум по визуалу</a>
               <button class="ghost-link" type="button" id="restartBtn">Пройти заново</button>
             </div>
             <p class="note" id="instagramNote"></p>
@@ -905,6 +973,7 @@
   const fillEl = document.getElementById("fill");
   const stepLabel = document.getElementById("stepLabel");
   const answeredLabel = document.getElementById("answeredLabel");
+  let visualOfferIntervalId = null;
 
   function renderScreens() {
     screensEl.innerHTML = questions.map((question, index) => {
@@ -1043,6 +1112,70 @@
     return sorted[0][1] === 0 ? "balanced" : sorted[0][0];
   }
 
+  function initVisualOfferTimer() {
+    const root = document.querySelector("[data-visual-offer]");
+    if (!root) return;
+
+    const durationMs = 30 * 60 * 1000;
+    const storageKey = "lm2_visual_praktikum_offer_started_at";
+    const clock = root.querySelector("[data-offer-clock]");
+    const label = root.querySelector("[data-offer-label]");
+    const status = root.querySelector("[data-offer-status]");
+    const activeCopy = document.querySelector("[data-offer-active]");
+    const oldPrice = document.querySelector("[data-offer-old-price]");
+    const currentPrice = document.querySelector("[data-offer-current-price]");
+
+    let startedAt = Date.now();
+    try {
+      const savedStart = Number(localStorage.getItem(storageKey));
+      if (savedStart && !Number.isNaN(savedStart)) {
+        startedAt = savedStart;
+      } else {
+        localStorage.setItem(storageKey, String(startedAt));
+      }
+    } catch (error) {
+      startedAt = Date.now();
+    }
+
+    function formatTime(ms) {
+      const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+      const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+      const seconds = String(totalSeconds % 60).padStart(2, "0");
+      return `${minutes}:${seconds}`;
+    }
+
+    function showExpired() {
+      root.dataset.offerState = "expired";
+      clock.textContent = "00:00";
+      label.textContent = "Срок действия скидки завершился";
+      status.textContent = "Напишите в WhatsApp, чтобы уточнить актуальные условия.";
+      if (activeCopy) activeCopy.hidden = true;
+      if (oldPrice) oldPrice.hidden = true;
+      if (currentPrice) currentPrice.textContent = "25 000 ₸";
+      if (visualOfferIntervalId) window.clearInterval(visualOfferIntervalId);
+    }
+
+    function updateTimer() {
+      const remainingMs = startedAt + durationMs - Date.now();
+      if (remainingMs <= 0) {
+        showExpired();
+        return;
+      }
+
+      root.dataset.offerState = "active";
+      clock.textContent = formatTime(remainingMs);
+      label.textContent = "Скидка сгорит через:";
+      status.textContent = "Отсчёт продолжится при следующем посещении страницы.";
+      if (activeCopy) activeCopy.hidden = false;
+      if (oldPrice) oldPrice.hidden = false;
+      if (currentPrice) currentPrice.textContent = "10 000 ₸";
+    }
+
+    if (visualOfferIntervalId) window.clearInterval(visualOfferIntervalId);
+    updateTimer();
+    visualOfferIntervalId = window.setInterval(updateTimer, 1000);
+  }
+
   function showResult() {
     const scores = getScores();
     const key = getDiagnosisKey();
@@ -1071,8 +1204,10 @@
     if (state.instagramNotes) noteParts.push("контекст по блогу");
 
     document.getElementById("instagramNote").textContent = noteParts.length
-      ? `Вы добавили ${noteParts.join(", ")}. Эти материалы пригодятся на практикуме: с ними будет проще заполнить основу блога и сразу собрать систему под себя.`
-      : "Даже без ссылки на Instagram уже видно главное узкое место. Следующий шаг — пройти практикум и собрать мини-систему, которая поможет превратить идеи в понятный контент-процесс.";
+      ? `Вы добавили ${noteParts.join(", ")}. Эти материалы пригодятся на практикуме по визуалу: с ними будет проще настроить правила оформления под ваш блог.`
+      : "Даже без ссылки на Instagram уже видно главное узкое место. Следующий шаг — начать с визуала и настроить правила, по которым ChatGPT будет делать карусели, обложки и одиночные посты в вашем стиле.";
+
+    initVisualOfferTimer();
   }
 
   backBtn.addEventListener("click", () => {
